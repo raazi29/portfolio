@@ -1,5 +1,5 @@
-
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 export default {
 	darkMode: ["class"],
@@ -165,5 +165,40 @@ export default {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		// Custom plugin for animation delays
+		plugin(({ addUtilities }) => {
+			const animationDelays = {
+				'.animation-delay-100': { 
+					'animation-delay': '100ms' 
+				},
+				'.animation-delay-200': { 
+					'animation-delay': '200ms' 
+				},
+				'.animation-delay-300': { 
+					'animation-delay': '300ms' 
+				},
+				'.animation-delay-400': { 
+					'animation-delay': '400ms' 
+				},
+				'.animation-delay-500': { 
+					'animation-delay': '500ms' 
+				},
+				'.animation-delay-1000': { 
+					'animation-delay': '1000ms' 
+				},
+				'.animation-delay-1500': { 
+					'animation-delay': '1500ms' 
+				},
+				'.animation-delay-2000': { 
+					'animation-delay': '2000ms' 
+				},
+				'.animation-delay-3000': { 
+					'animation-delay': '3000ms' 
+				},
+			};
+			addUtilities(animationDelays);
+		})
+	],
 } satisfies Config;

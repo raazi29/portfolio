@@ -9,7 +9,14 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
   },
   plugins: [
-    react(),
+    react({
+      babel: {
+        plugins: [
+          // Add future flags for React Router
+          ['module:@babel/plugin-transform-react-jsx', { runtime: 'automatic' }]
+        ]
+      }
+    }),
     // You can add more conditional plugins here based on `mode`
   ],
   resolve: {
@@ -17,4 +24,11 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  define: {
+    // Add React Router future flags
+    'process.env.ROUTER_FUTURE_FLAGS': JSON.stringify({
+      v7_startTransition: true,
+      v7_relativeSplatPath: true
+    })
+  }
 }));

@@ -1,6 +1,5 @@
-
 import React, { useRef } from 'react';
-import { Send, Search, Brain, Lightbulb, ChevronDown, ImageIcon, Paperclip, Plus } from 'lucide-react';
+import { Send, Search, Brain, Lightbulb, ChevronDown, ImageIcon, Paperclip, Plus, FileText, File } from 'lucide-react';
 import { cn } from '@/lib/util';
 import {
   DropdownMenu,
@@ -69,16 +68,15 @@ const ChatInput = ({
     setSelectedImages(selectedImages.filter((_, i) => i !== index));
   };
 
+  const getFileIcon = (fileType: string) => {
+    if (fileType.startsWith('image/')) return <ImageIcon size={16} />;
+    if (fileType.includes('pdf')) return <FileText size={16} />;
+    return <File size={16} />;
+  };
+
   return (
     <DragDropZone onFileDrop={handleFileDrop}>
-      <div className="flex flex-col items-center pt-4 space-y-3">
-        {/* Image Preview - Show above input when images are selected */}
-        {selectedImages.length > 0 && (
-          <div className="w-full max-w-3xl">
-            <ImagePreview images={selectedImages} onRemove={removeImage} />
-          </div>
-        )}
-        
+      <div className="flex flex-col items-center space-y-3">
         <div className={cn(
           "relative w-full max-w-3xl group",
           "backdrop-blur-3xl bg-gradient-to-br from-white/90 via-white/80 to-white/70",
@@ -141,6 +139,8 @@ const ChatInput = ({
                     accept="image/*"
                     onChange={onImageUpload}
                     className="hidden"
+                    aria-label="Upload images"
+                    title="Upload images"
                   />
                   <button
                     type="button"
@@ -149,6 +149,7 @@ const ChatInput = ({
                       "p-1 sm:p-1.5 rounded-lg transition-all duration-300",
                       "text-gray-600 dark:text-gray-400 hover:bg-black/10 dark:hover:bg-white/10"
                     )}
+                    aria-label="Upload Images"
                     title="Upload Images"
                   >
                     <ImageIcon size={16} className="sm:w-[18px] sm:h-[18px]" />
@@ -158,9 +159,11 @@ const ChatInput = ({
                     ref={attachmentInputRef}
                     type="file"
                     multiple
-                    accept="image/*,text/*,.pdf"
+                    accept="image/*,text/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
                     onChange={onAttachmentUpload}
                     className="hidden"
+                    aria-label="Attach files"
+                    title="Attach files"
                   />
                   <button
                     type="button"
@@ -169,6 +172,7 @@ const ChatInput = ({
                       "p-1 sm:p-1.5 rounded-lg transition-all duration-300",
                       "text-gray-600 dark:text-gray-400 hover:bg-black/10 dark:hover:bg-white/10"
                     )}
+                    aria-label="Attach Files"
                     title="Attach Files"
                   >
                     <Paperclip size={16} className="sm:w-[18px] sm:h-[18px]" />
@@ -181,6 +185,7 @@ const ChatInput = ({
                       "p-1 sm:p-1.5 rounded-lg transition-all duration-300",
                       "text-gray-600 dark:text-gray-400 hover:bg-black/10 dark:hover:bg-white/10"
                     )}
+                    aria-label="Select AI Model"
                     title="Select AI Model"
                   >
                     <Plus size={16} className="sm:w-[18px] sm:h-[18px]" />
@@ -194,6 +199,7 @@ const ChatInput = ({
                           "p-1 sm:p-1.5 rounded-lg transition-all duration-300",
                           "text-gray-600 dark:text-gray-400 hover:bg-black/10 dark:hover:bg-white/10"
                         )}
+                        aria-label="AI Modes"
                         title="AI Modes"
                       >
                         {isWebSearch ? <Search size={16} className="sm:w-[18px] sm:h-[18px]" /> : 
@@ -266,6 +272,7 @@ const ChatInput = ({
                       "disabled:scale-100",
                       "border border-gray-500/50"
                     )}
+                    aria-label="Send message"
                   >
                     <div className={cn(
                       "flex items-center justify-center transition-all duration-300",
@@ -279,6 +286,35 @@ const ChatInput = ({
                   </button>
                 </div>
               </div>
+              
+              {/* Display uploaded files below the input area */}
+              {selectedImages.length > 0 && (
+                <div className="px-3 sm:px-4 py-2 border-t border-gray-200/30 dark:border-gray-700/30">
+                  <div className="flex flex-wrap gap-2">
+                    {selectedImages.map((img, index) => (
+                      <div 
+                        key={index}
+                        className="relative group flex items-center bg-gray-100/80 dark:bg-gray-800/80 rounded-lg overflow-hidden border border-gray-200/50 dark:border-gray-700/50"
+                      >
+                        <div className="h-8 w-8 flex items-center justify-center bg-gray-200/80 dark:bg-gray-700/80">
+                          <ImageIcon size={14} className="text-gray-600 dark:text-gray-300" />
+                        </div>
+                        <div className="px-2 py-1 text-xs truncate max-w-[100px]">
+                          Image {index + 1}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute right-0 top-0 bottom-0 bg-gray-200/80 dark:bg-gray-700/80 px-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                          aria-label={`Remove image ${index + 1}`}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </form>
           {!apiKey && (
@@ -287,6 +323,13 @@ const ChatInput = ({
             </p>
           )}
         </div>
+        
+        {/* Moved image preview outside the input area */}
+        {selectedImages.length > 0 && (
+          <div className="w-full max-w-3xl hidden">
+            <ImagePreview images={selectedImages} onRemove={removeImage} />
+          </div>
+        )}
       </div>
     </DragDropZone>
   );

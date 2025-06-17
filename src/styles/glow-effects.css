@@ -1,4 +1,3 @@
-
 @keyframes gradient-conic {
     0% {
       transform: rotate(0deg);
@@ -87,5 +86,62 @@
       0 1px 2px rgba(0, 0, 0, 0.4),
       0 4px 8px rgba(0, 0, 0, 0.3),
       0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Silver shimmer animation for brain icon */
+  @keyframes silverShimmer {
+    0% {
+      filter: drop-shadow(0 0 2px rgba(192, 192, 192, 0.5));
+    }
+    50% {
+      filter: drop-shadow(0 0 10px rgba(192, 192, 192, 0.8));
+    }
+    100% {
+      filter: drop-shadow(0 0 2px rgba(192, 192, 192, 0.5));
+    }
+  }
+  
+  .silver-shimmer {
+    animation: silverShimmer 2s infinite;
+  }
+  
+  .brain-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border-radius: 50%;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+  }
+  
+  .brain-icon::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(
+      90deg, 
+      transparent, 
+      rgba(192, 192, 192, 0.2), 
+      rgba(192, 192, 192, 0.4), 
+      rgba(192, 192, 192, 0.2), 
+      transparent
+    );
+    animation: shimmerSlide 2s infinite linear;
+    transform: translateX(-100%);
+  }
+  
+  @keyframes shimmerSlide {
+    100% {
+      transform: translateX(100%);
+    }
   }
   

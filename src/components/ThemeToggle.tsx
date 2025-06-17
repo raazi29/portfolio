@@ -12,6 +12,8 @@ const ThemeToggle = () => {
         id="theme-checkbox"
         checked={isDark}
         onChange={toggleTheme}
+        aria-label="Toggle dark mode"
+        title="Toggle dark mode"
         className="theme-checkbox"
       />
       <label htmlFor="theme-checkbox" className="theme-label">

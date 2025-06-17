@@ -148,7 +148,7 @@ const Projects = () => {
       metrics: {
         security: "30% vulnerability reduction",
         detection: "95% accuracy rate",
-        coverage: "50K+ lines analyzed"
+        coverage: "5K+ lines analyzed"
       }
     }
   ];

@@ -17,7 +17,7 @@ const WelcomeScreen = ({ modelsCount, onTagClick }: WelcomeScreenProps) => {
         <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-600/5 rounded-2xl sm:rounded-3xl blur-xl"></div>
         <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full overflow-hidden relative z-10 border-2 border-purple-400/30 dark:border-purple-300/20">
           <img 
-            src="/portfolio/public/img/image.png" 
+            src="/public/img/image.png" 
             alt="REI AI Assistant" 
             className="w-full h-full object-cover"
           />

@@ -135,7 +135,7 @@ const Features = () => {
           <FeatureCard
             icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>}
             title="Programming Languages"
-            description="Python, SQL, Java, C - Strong foundation in multiple programming languages for diverse applications and problem-solving."
+            description="Python, SQL - Strong foundation in multiple programming languages for diverse applications and problem-solving."
             index={0}
           />
           <FeatureCard
@@ -152,14 +152,14 @@ const Features = () => {
           />
           <FeatureCard
             icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M16 13H8"></path><path d="M16 17H8"></path><path d="M10 9H8"></path></svg>}
-            title="Web Development"
-            description="FastAPI, Streamlit, React.js, HTML, CSS - Full-stack development with modern frameworks and responsive design."
+            title="Web and App Development "
+            description="React.js, HTML, CSS,FastAPI, Streamlit - Full-stack development with modern frameworks and responsive design."
             index={3}
           />
           <FeatureCard
             icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7"><path d="M4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7"></path><ellipse cx="12" cy="7" rx="8" ry="4"></ellipse></svg>}
             title="Database Management"
-            description="MongoDB, Vercel, Git - Efficient data storage, version control, and cloud deployment solutions."
+            description="PostgreSQL, Vercel, Supabase,Git - Efficient data storage, version control, and cloud deployment solutions."
             index={4}
           />
           <FeatureCard

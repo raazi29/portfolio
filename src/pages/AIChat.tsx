@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Brain } from 'lucide-react';
+import { Brain, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/util';
 import { useToast } from '@/hooks/use-toast';
 import CodeBlock from '@/components/CodeBlock';
@@ -10,6 +10,8 @@ import ModelSelector from '@/components/AIChat/ModelSelector';
 import ChatHistory from '@/components/AIChat/ChatHistory';
 import ChatInput from '@/components/AIChat/ChatInput';
 import WelcomeScreen from '@/components/AIChat/WelcomeScreen';
+import SessionManager from '@/components/AIChat/SessionManager';
+import '../styles/glow-effects.css';
 
 interface Message {
   id: string;
@@ -19,6 +21,18 @@ interface Message {
   thinking?: string;
   model?: string;
   images?: string[];
+  isStreaming?: boolean;
+  isPartial?: boolean;
+}
+
+// New interface for chat sessions
+interface ChatSession {
+  id: string;
+  name: string;
+  messages: Message[];
+  createdAt: Date;
+  updatedAt: Date;
+  modelId: string;
 }
 
 const AIChat = () => {
@@ -40,6 +54,15 @@ const AIChat = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState("");
+  
+  // Add conversation management state
+  const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
+  const [activeChatSessionId, setActiveChatSessionId] = useState<string | null>(null);
+  const [showSessionsMenu, setShowSessionsMenu] = useState(false);
+  const [newSessionName, setNewSessionName] = useState("");
 
   const models = [
     { id: 'google/gemini-2.0-flash-exp:free', name: 'Gemini 2.0 Flash', context: '1M tokens', hasVision: true, category: 'Vision', description: 'Latest Google model with vision' },
@@ -108,6 +131,45 @@ const AIChat = () => {
     if (saved) {
       setChatHistory(JSON.parse(saved));
     }
+    
+    // Load saved chat sessions
+    const savedSessions = localStorage.getItem('chat-sessions');
+    if (savedSessions) {
+      try {
+        const parsedSessions = JSON.parse(savedSessions);
+        
+        // Transform the sessions to ensure dates are properly converted from strings
+        const sessions = parsedSessions.map((session: any) => ({
+          ...session,
+          createdAt: new Date(session.createdAt),
+          updatedAt: new Date(session.updatedAt),
+          messages: session.messages.map((msg: any) => ({
+            ...msg,
+            timestamp: new Date(msg.timestamp)
+          }))
+        })) as ChatSession[];
+        
+        setChatSessions(sessions);
+        
+        // Load active session if there is one
+        const activeSessionId = localStorage.getItem('active-chat-session-id');
+        if (activeSessionId) {
+          setActiveChatSessionId(activeSessionId);
+          const activeSession = sessions.find(s => s.id === activeSessionId);
+          if (activeSession) {
+            setMessages(activeSession.messages);
+            setSelectedModel(activeSession.modelId);
+          }
+        }
+      } catch (error) {
+        console.error('Error parsing saved sessions:', error);
+        // Clear corrupted data
+        localStorage.removeItem('chat-sessions');
+        localStorage.removeItem('active-chat-session-id');
+        setChatSessions([]);
+        setActiveChatSessionId(null);
+      }
+    }
   };
 
   const saveChatHistory = (messages: Message[]) => {
@@ -116,6 +178,24 @@ const AIChat = () => {
     const updated = [history, ...existing.slice(0, 9)];
     localStorage.setItem('chat-history', JSON.stringify(updated));
     setChatHistory(updated);
+    
+    // If there's an active session, update it
+    if (activeChatSessionId) {
+      const updatedSessions = chatSessions.map(session => {
+        if (session.id === activeChatSessionId) {
+          return {
+            ...session,
+            messages,
+            updatedAt: new Date(),
+            modelId: selectedModel
+          };
+        }
+        return session;
+      });
+      
+      setChatSessions(updatedSessions);
+      localStorage.setItem('chat-sessions', JSON.stringify(updatedSessions));
+    }
   };
 
   const saveApiKey = () => {
@@ -191,10 +271,85 @@ const AIChat = () => {
           }
         };
         reader.readAsDataURL(file);
+      } else if (file.type === 'application/pdf' || 
+                file.type === 'text/plain' || 
+                file.type.includes('document') || 
+                file.type.includes('spreadsheet') ||
+                file.type.includes('presentation')) {
+        // For PDFs and other document types
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const result = e.target?.result;
+          // For text files, we can extract content directly
+          if (typeof result === 'string' && file.type === 'text/plain') {
+            setInput(prev => {
+              const newInput = prev ? `${prev}\n\nContent from ${file.name}:\n${result}` : `Content from ${file.name}:\n${result}`;
+              return newInput.length > 8000 ? newInput.substring(0, 8000) + "... (content truncated)" : newInput;
+            });
+            toast({
+              title: "Text File Loaded",
+              description: `Content from ${file.name} added to input`,
+            });
+      } else {
+            // For binary files like PDFs, we'll just mention them
+            setInput(prev => 
+              prev ? `${prev}\n\nAnalyze the attached file: ${file.name}` : `Analyze the attached file: ${file.name}`
+            );
+            
+            // For PDFs, we could add them as base64 images if the model supports vision
+            if (file.type === 'application/pdf') {
+              const visionModel = models.find(m => m.hasVision);
+              if (visionModel) {
+                setSelectedModel(visionModel.id);
+        toast({
+                  title: "PDF Document Added",
+                  description: `Using ${visionModel.name} to analyze PDF document`,
+                });
+                
+                // Add the first page as an image if it's a PDF
+                if (typeof result === 'string') {
+                  // Check PDF size - large PDFs may cause API errors
+                  if (result.length > 500000) {
+                    toast({
+                      title: "Large PDF Detected",
+                      description: "This PDF is large and may not be fully processed by the AI",
+          variant: "destructive"
+        });
+      }
+                  setSelectedImages(prev => [...prev, result]);
+                }
+              } else {
+                toast({
+                  title: "PDF Document Added",
+                  description: "PDF added for analysis",
+                });
+              }
+            } else {
+              toast({
+                title: "File Added",
+                description: `${file.name} added for analysis`,
+              });
+            }
+          }
+        };
+        
+        if (file.type === 'text/plain') {
+          reader.readAsText(file);
+        } else {
+          // For PDFs, check file size first
+          if (file.type === 'application/pdf' && file.size > 1000000) {
+            toast({
+              title: "Large PDF",
+              description: "This PDF is large and may not be fully analyzed",
+              variant: "default"
+            });
+          }
+          reader.readAsDataURL(file);
+        }
       } else {
         toast({
-          title: "File type not supported",
-          description: "Currently only image files are supported",
+          title: "File type not fully supported",
+          description: "This file type may not be analyzed completely",
           variant: "destructive"
         });
       }
@@ -237,11 +392,67 @@ const AIChat = () => {
   };
 
   const formatTimestamp = (date: Date) => {
+    if (!(date instanceof Date) || isNaN(date.getTime())) {
+      return "Invalid date";
+    }
     return new Intl.DateTimeFormat('en-US', {
       hour: '2-digit',
       minute: '2-digit',
       hour12: true
     }).format(date);
+  };
+
+  const handleMessageAction = (action: 'copy' | 'edit' | 'regenerate', message: Message) => {
+    switch (action) {
+      case 'copy':
+        navigator.clipboard.writeText(message.content);
+        toast({
+          title: "Copied!",
+          description: "Message copied to clipboard",
+        });
+        break;
+      case 'edit':
+        if (message.role === 'user') {
+          setIsEditing(message.id);
+          setEditContent(message.content);
+        }
+        break;
+      case 'regenerate':
+        // Remove this message and all subsequent messages
+        const messageIndex = messages.findIndex(m => m.id === message.id);
+        if (messageIndex >= 0) {
+          setMessages(prev => prev.slice(0, messageIndex));
+          
+          // If this was an assistant message, resubmit the previous user message
+          if (message.role === 'assistant' && messageIndex > 0) {
+            const prevUserMessage = messages[messageIndex - 1];
+            if (prevUserMessage.role === 'user') {
+              setInput(prevUserMessage.content);
+              // If there were images, restore them too
+              if (prevUserMessage.images && prevUserMessage.images.length > 0) {
+                setSelectedImages(prevUserMessage.images);
+              }
+            }
+          }
+        }
+        break;
+    }
+  };
+
+  const handleEditSubmit = () => {
+    if (!isEditing || !editContent.trim()) return;
+    
+    const editedMessageIndex = messages.findIndex(m => m.id === isEditing);
+    if (editedMessageIndex >= 0) {
+      const editedMessage = {...messages[editedMessageIndex], content: editContent.trim()};
+      
+      // Replace the message and remove all subsequent messages
+      setMessages(prev => [...prev.slice(0, editedMessageIndex), editedMessage]);
+      
+      // Clear editing state
+      setIsEditing(null);
+      setEditContent("");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -303,11 +514,29 @@ const AIChat = () => {
 
       if (userMessage.images && userMessage.images.length > 0 && currentModel?.hasVision) {
         console.log('Adding images to request, count:', userMessage.images.length);
+        
+        // Filter out PDF files that might be causing issues
+        const safeImages = userMessage.images.filter(img => {
+          // Skip PDFs that are too large or might cause issues
+          if (img.startsWith('data:application/pdf') && img.length > 500000) {
+            console.log('Skipping large PDF in API request');
+            return false;
+          }
+          return true;
+        });
+        
         apiMessages.push({
           role: 'user',
           content: [
-            { type: 'text', text: userMessage.content },
-            ...userMessage.images.map(img => ({
+            { 
+              type: 'text', 
+              text: userMessage.content + (
+                safeImages.length < userMessage.images.length 
+                  ? "\n\nNote: Some PDF files were too large to process directly and have been omitted from the request."
+                  : ""
+              )
+            },
+            ...safeImages.map(img => ({
               type: 'image_url',
               image_url: { url: img }
             }))
@@ -346,6 +575,23 @@ const AIChat = () => {
 
       console.log('Final API messages:', JSON.stringify(apiMessages, null, 2));
 
+      // Create a placeholder streaming message
+      const streamingId = (Date.now() + 1).toString();
+      setStreamingMessageId(streamingId);
+      
+      const streamingMessage: Message = {
+        id: streamingId,
+        content: '',
+        role: 'assistant',
+        timestamp: new Date(),
+        model: selectedModel,
+        isStreaming: true
+      };
+      
+      setMessages(prev => [...prev, streamingMessage]);
+      scrollToBottom();
+
+      // Set up streaming fetch
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -359,7 +605,7 @@ const AIChat = () => {
           messages: apiMessages,
           temperature: isDeepThinking ? 0.3 : 0.7,
           max_tokens: isDeepThinking ? 4000 : 2000,
-          stream: false
+          stream: true // Enable streaming
         })
       });
 
@@ -379,6 +625,7 @@ const AIChat = () => {
               description: `${currentModel?.name || 'Current model'} is unavailable. Trying ${nextModel.name}...`,
             });
             
+            // Try again with the fallback model
             const retryResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
               method: 'POST',
               headers: {
@@ -392,25 +639,62 @@ const AIChat = () => {
                 messages: apiMessages,
                 temperature: isDeepThinking ? 0.3 : 0.7,
                 max_tokens: isDeepThinking ? 4000 : 2000,
-                stream: false
+                stream: true // Keep streaming enabled
               })
             });
             
             if (retryResponse.ok) {
-              const retryData = await retryResponse.json();
-              const assistantMessage: Message = {
-                id: (Date.now() + 1).toString(),
-                content: retryData.choices[0]?.message?.content || 'Sorry, I couldn\'t generate a response.',
-                role: 'assistant',
-                timestamp: new Date(),
-                model: nextModel.id
-              };
-
-              setMessages(prev => {
-                const updated = [...prev, assistantMessage];
-                saveChatHistory(updated);
-                return updated;
-              });
+              // Process the stream for the retry response
+              const reader = retryResponse.body?.getReader();
+              const decoder = new TextDecoder();
+              let responseText = '';
+              
+              if (reader) {
+                while (true) {
+                  const { done, value } = await reader.read();
+                  if (done) break;
+                  
+                  const chunk = decoder.decode(value, { stream: true });
+                  // Process SSE data
+                  const lines = chunk.split('\n');
+                  for (const line of lines) {
+                    if (line.startsWith('data: ')) {
+                      const data = line.slice(6);
+                      if (data === '[DONE]') continue;
+                      
+                      try {
+                        const parsed = JSON.parse(data);
+                        const content = parsed.choices[0]?.delta?.content || '';
+                        if (content) {
+                          responseText += content;
+                          setMessages(prev => 
+                            prev.map(msg => 
+                              msg.id === streamingId ? { ...msg, content: responseText, model: nextModel.id } : msg
+                            )
+                          );
+                          scrollToBottom();
+                        }
+                      } catch (e) {
+                        console.error('Error parsing streaming data:', e);
+                      }
+                    }
+                  }
+                }
+              }
+              
+              // Finalize the message when done
+              setMessages(prev => 
+                prev.map(msg => 
+                  msg.id === streamingId ? { ...msg, isStreaming: false, model: nextModel.id } : msg
+                )
+              );
+              setStreamingMessageId(null);
+              saveChatHistory([...messages, { 
+                ...streamingMessage, 
+                content: responseText, 
+                isStreaming: false,
+                model: nextModel.id 
+              }]);
               return;
             }
           }
@@ -421,25 +705,64 @@ const AIChat = () => {
           errorMessage = errorData.error.message;
         }
         
+        // Update the streaming message to show the error
+        setMessages(prev => 
+          prev.map(msg => 
+            msg.id === streamingId ? { ...msg, content: errorMessage, isStreaming: false } : msg
+          )
+        );
+        setStreamingMessageId(null);
+        
         throw new Error(errorMessage);
       }
 
-      const data = await response.json();
-      console.log('API Response:', data);
-
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: data.choices[0]?.message?.content || 'Sorry, I couldn\'t generate a response.',
-        role: 'assistant',
-        timestamp: new Date(),
-        model: selectedModel
-      };
-
-      setMessages(prev => {
-        const updated = [...prev, assistantMessage];
-        saveChatHistory(updated);
-        return updated;
-      });
+      // Process the stream
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      let responseText = '';
+      
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          
+          const chunk = decoder.decode(value, { stream: true });
+          // Process SSE data
+          const lines = chunk.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6);
+              if (data === '[DONE]') continue;
+              
+              try {
+                const parsed = JSON.parse(data);
+                const content = parsed.choices[0]?.delta?.content || '';
+                if (content) {
+                  responseText += content;
+                  setMessages(prev => 
+                    prev.map(msg => 
+                      msg.id === streamingId ? { ...msg, content: responseText } : msg
+                    )
+                  );
+                  scrollToBottom();
+                }
+              } catch (e) {
+                console.error('Error parsing streaming data:', e);
+              }
+            }
+          }
+        }
+      }
+      
+      // Finalize the message when done
+      setMessages(prev => 
+        prev.map(msg => 
+          msg.id === streamingId ? { ...msg, isStreaming: false } : msg
+        )
+      );
+      setStreamingMessageId(null);
+      saveChatHistory([...messages, { ...streamingMessage, content: responseText, isStreaming: false }]);
+      
     } catch (error) {
       console.error('Chat error:', error);
       
@@ -462,6 +785,15 @@ const AIChat = () => {
         variant: "destructive"
       });
 
+      // Update the streaming message to show the error or create a new error message
+      if (streamingMessageId) {
+        setMessages(prev => 
+          prev.map(msg => 
+            msg.id === streamingMessageId ? { ...msg, content: errorMessage, isStreaming: false } : msg
+          )
+        );
+        setStreamingMessageId(null);
+      } else {
       const errorMessageObj: Message = {
         id: (Date.now() + 1).toString(),
         content: errorMessage,
@@ -469,6 +801,7 @@ const AIChat = () => {
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessageObj]);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -483,6 +816,91 @@ const AIChat = () => {
     return acc;
   }, {} as Record<string, typeof models>);
 
+  const createNewSession = () => {
+    const name = newSessionName.trim() || `Chat ${chatSessions.length + 1}`;
+    const newSession: ChatSession = {
+      id: Date.now().toString(),
+      name,
+      messages: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      modelId: selectedModel
+    };
+    
+    const updatedSessions = [newSession, ...chatSessions];
+    setChatSessions(updatedSessions);
+    localStorage.setItem('chat-sessions', JSON.stringify(updatedSessions));
+    
+    // Set as active session
+    setActiveChatSessionId(newSession.id);
+    localStorage.setItem('active-chat-session-id', newSession.id);
+    
+    // Clear current messages
+    setMessages([]);
+    setNewSessionName("");
+    
+    toast({
+      title: "New Chat Created",
+      description: `Started new chat: ${name}`
+    });
+  };
+  
+  const switchSession = (sessionId: string) => {
+    const session = chatSessions.find(s => s.id === sessionId);
+    if (session) {
+      setActiveChatSessionId(sessionId);
+      localStorage.setItem('active-chat-session-id', sessionId);
+      setMessages(session.messages);
+      setSelectedModel(session.modelId);
+      
+      toast({
+        title: "Chat Switched",
+        description: `Switched to: ${session.name}`
+      });
+    }
+  };
+  
+  const deleteSession = (sessionId: string) => {
+    const updatedSessions = chatSessions.filter(s => s.id !== sessionId);
+    setChatSessions(updatedSessions);
+    localStorage.setItem('chat-sessions', JSON.stringify(updatedSessions));
+    
+    // If the active session was deleted, reset
+    if (activeChatSessionId === sessionId) {
+      setActiveChatSessionId(null);
+      localStorage.removeItem('active-chat-session-id');
+      setMessages([]);
+    }
+    
+    toast({
+      title: "Chat Deleted",
+      description: "Chat session has been deleted"
+    });
+  };
+  
+  const renameSession = (sessionId: string, newName: string) => {
+    if (!newName.trim()) return;
+    
+    const updatedSessions = chatSessions.map(session => {
+      if (session.id === sessionId) {
+        return {
+          ...session,
+          name: newName,
+          updatedAt: new Date()
+        };
+      }
+      return session;
+    });
+    
+    setChatSessions(updatedSessions);
+    localStorage.setItem('chat-sessions', JSON.stringify(updatedSessions));
+    
+    toast({
+      title: "Chat Renamed",
+      description: `Chat renamed to: ${newName}`
+    });
+  };
+
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-white/5 dark:bg-black/5">
       <ChatHeader
@@ -492,8 +910,14 @@ const AIChat = () => {
         setShowHistory={setShowHistory}
         showSettings={showSettings}
         setShowSettings={setShowSettings}
-        showTimestamps={showTimestamps}
-        setShowTimestamps={setShowTimestamps}
+        chatSessions={chatSessions}
+        activeChatSessionId={activeChatSessionId}
+        onSwitchSession={switchSession}
+        onCreateSession={createNewSession}
+        onDeleteSession={deleteSession}
+        onRenameSession={renameSession}
+        newSessionName={newSessionName}
+        setNewSessionName={setNewSessionName}
       />
 
       <SettingsPanel
@@ -519,11 +943,19 @@ const AIChat = () => {
         chatHistory={chatHistory}
       />
 
-      <div className="flex-1 flex flex-col pt-16 sm:pt-20 pb-4 sm:pb-6 px-3 sm:px-6 max-w-4xl mx-auto w-full min-h-0">
+      <div className="flex-1 flex flex-col pb-4 sm:pb-6 max-w-4xl mx-auto w-full min-h-0 relative">
         <div 
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto space-y-6 sm:space-y-8 pr-1 sm:pr-2 scroll-smooth"
+          className="flex-1 overflow-y-auto space-y-6 sm:space-y-8 pr-1 sm:pr-2 scroll-smooth custom-scrollbar"
         >
+          {isDeepThinking && (
+            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-[0.03] dark:opacity-[0.02] pointer-events-none">
+              <div className="brain-icon-watermark animate-pulse-slow">
+                <Brain className="w-64 h-64 sm:w-96 sm:h-96 text-gray-100" />
+              </div>
+            </div>
+          )}
+          <div className="px-3 sm:px-6 pt-24 sm:pt-28">
           {messages.length === 0 && (
             <WelcomeScreen
               modelsCount={models.length}
@@ -542,12 +974,80 @@ const AIChat = () => {
                   message.role === 'user' ? "justify-end" : "justify-start"
                 )}>
                   <div className={cn(
-                    "max-w-[90%] sm:max-w-[85%] rounded-2xl sm:rounded-3xl",
+                      "relative group max-w-[90%] sm:max-w-[85%] rounded-2xl sm:rounded-3xl",
                     message.role === 'user'
-                      ? "px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-br from-blue-500/10 to-indigo-600/10 dark:from-blue-400/20 dark:to-indigo-500/20 text-gray-800 dark:text-gray-200 border-2 border-blue-300/30 dark:border-blue-400/30 shadow-xl shadow-blue-500/10 dark:shadow-blue-400/20"
+                        ? "px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-br from-blue-500/10 to-indigo-600/10 dark:from-blue-400/20 dark:to-indigo-500/20 text-gray-800 dark:text-gray-200 border border-blue-300/30 dark:border-blue-400/30 shadow-xl shadow-blue-500/10 dark:shadow-blue-400/20"
                       : "space-y-4"
                   )}>
-                    {message.role === 'user' ? (
+                      {/* Message hover actions */}
+                      <div className={cn(
+                        "absolute right-2 -top-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50",
+                        "flex items-center space-x-1 bg-white/90 dark:bg-gray-800/90 rounded-lg shadow-lg p-1",
+                        "border border-gray-200/60 dark:border-gray-700/60"
+                      )}>
+                        <button 
+                          onClick={() => handleMessageAction('copy', message)}
+                          className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                          aria-label="Copy message"
+                          title="Copy message"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        </button>
+                        
+                        {message.role === 'user' && (
+                          <button 
+                            onClick={() => handleMessageAction('edit', message)}
+                            className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                            aria-label="Edit message"
+                            title="Edit & resubmit"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                          </button>
+                        )}
+                        
+                        {message.role === 'assistant' && (
+                          <button 
+                            onClick={() => handleMessageAction('regenerate', message)}
+                            className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                            aria-label="Regenerate response"
+                            title="Regenerate response"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+                      
+                      {/* Edit mode UI */}
+                      {isEditing === message.id ? (
+                        <div className="w-full">
+                          <textarea
+                            value={editContent}
+                            onChange={(e) => setEditContent(e.target.value)}
+                            className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                            rows={3}
+                          />
+                          <div className="flex justify-end space-x-2 mt-2">
+                            <button 
+                              onClick={() => setIsEditing(null)}
+                              className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                            >
+                              Cancel
+                            </button>
+                            <button 
+                              onClick={handleEditSubmit}
+                              className="px-3 py-1 rounded bg-blue-600 text-white"
+                            >
+                              Submit
+                            </button>
+                          </div>
+                        </div>
+                      ) : message.role === 'user' ? (
                       <>
                         <p className="whitespace-pre-wrap leading-relaxed text-sm sm:text-base font-medium">{message.content}</p>
                         
@@ -563,43 +1063,58 @@ const AIChat = () => {
                             ))}
                           </div>
                         )}
+                          <div className="text-right text-[10px] opacity-60 font-normal mt-1.5 text-blue-400/80 dark:text-blue-400/60">
+                            {formatTimestamp(message.timestamp)}
+                          </div>
                       </>
                     ) : (
                       <>
                         {textParts.map((textPart, index) => {
                           const codeBlockIndex = codeBlockIndices[Math.floor(index / 2)];
+                            const isLastTextPart = !files[codeBlockIndex] && index === textParts.length - 1;
                           
                           return (
                             <React.Fragment key={index}>
                               {textPart.trim() && (
                                 <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-br from-gray-50/90 to-white/90 dark:from-gray-800/90 dark:to-gray-900/90 text-gray-800 dark:text-gray-200 border-2 border-gray-200/50 dark:border-gray-600/50 shadow-xl shadow-gray-500/10 dark:shadow-gray-900/30 rounded-2xl sm:rounded-3xl backdrop-blur-sm">
-                                  <p className="whitespace-pre-wrap leading-relaxed text-sm sm:text-base">{textPart}</p>
+                                    <p className="whitespace-pre-wrap leading-relaxed text-sm sm:text-base">
+                                      {textPart}
+                                      {message.isStreaming && index === textParts.length - 1 && (
+                                        <span className="inline-block w-2 h-4 ml-1 bg-current animate-pulse"></span>
+                                      )}
+                                    </p>
+                                    {isLastTextPart && (
+                                      <div className="text-right text-[10px] opacity-60 font-normal mt-1.5 text-gray-500 dark:text-gray-400">
+                                        {formatTimestamp(message.timestamp)}
+                                      </div>
+                                    )}
                                 </div>
                               )}
                               
                               {codeBlockIndex !== undefined && files[codeBlockIndex] && (
+                                  <>
                                 <CodeBlock 
                                   files={[files[codeBlockIndex]]} 
                                   className="w-full"
                                 />
+                                    <div className="text-right text-[10px] opacity-60 font-normal mt-1.5 pr-2 text-gray-500 dark:text-gray-400">
+                                      {formatTimestamp(message.timestamp)}
+                                    </div>
+                                  </>
                               )}
                             </React.Fragment>
                           );
                         })}
                         
-                        {hasCode && files.length > 1 && (
+                          {hasCode && files.length > 1 && !textParts.some(p => p.trim()) && (
+                            <>
                           <CodeBlock files={files} className="w-full" />
+                               <div className="text-right text-[10px] opacity-60 font-normal mt-1.5 pr-2 text-gray-500 dark:text-gray-400">
+                                {formatTimestamp(message.timestamp)}
+                              </div>
+                            </>
                         )}
                       </>
-                    )}
-                    
-                    {showTimestamps && (
-                      <div className={cn(
-                        "text-xs opacity-50 font-normal mt-1.5 px-1",
-                        message.role === 'user' ? "text-right text-blue-600 dark:text-blue-400" : "text-left text-gray-500 dark:text-gray-400"
-                      )}>
-                        {formatTimestamp(message.timestamp)}
-                      </div>
                     )}
                     
                     {message.model && message.role === 'assistant' && (
@@ -649,8 +1164,10 @@ const AIChat = () => {
             </div>
           )}
           <div ref={messagesEndRef} />
+          </div>
         </div>
 
+        <div className="px-3 sm:px-6">
         <ChatInput
           input={input}
           setInput={setInput}
@@ -667,8 +1184,9 @@ const AIChat = () => {
           setSelectedImages={setSelectedImages}
           onImageUpload={handleImageUpload}
           onAttachmentUpload={handleAttachmentUpload}
-          onShowModelGrid={() => setShowModelGrid(!showModelGrid)}
+            onShowModelGrid={() => setShowModelGrid(true)}
         />
+        </div>
       </div>
     </div>
   );

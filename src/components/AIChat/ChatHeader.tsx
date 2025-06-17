@@ -1,18 +1,43 @@
-import React from 'react';
-import { ArrowLeft, History, Settings, Clock } from 'lucide-react';
+import React, { useState } from 'react';
+import { 
+  History, 
+  Settings, 
+  Plus,
+  MessageSquare,
+  ArrowLeft,
+  X,
+  PlusCircle,
+  Save,
+  Edit,
+  Trash2
+} from 'lucide-react';
 import { cn } from '@/lib/util';
-import { Link } from 'react-router-dom';
 import ThemeToggle from '@/components/ThemeToggle';
+
+interface ChatSession {
+  id: string;
+  name: string;
+  messages: any[];
+  createdAt: Date;
+  updatedAt: Date;
+  modelId: string;
+}
 
 interface ChatHeaderProps {
   isScrolled: boolean;
   messagesLength: number;
   showHistory: boolean;
-  setShowHistory: (show: boolean) => void;
+  setShowHistory: (value: boolean) => void;
   showSettings: boolean;
-  setShowSettings: (show: boolean) => void;
-  showTimestamps: boolean;
-  setShowTimestamps: (show: boolean) => void;
+  setShowSettings: (value: boolean) => void;
+  chatSessions?: ChatSession[];
+  activeChatSessionId?: string | null;
+  onSwitchSession?: (sessionId: string) => void;
+  onCreateSession?: () => void;
+  onDeleteSession?: (sessionId: string) => void;
+  onRenameSession?: (sessionId: string, newName: string) => void;
+  newSessionName?: string;
+  setNewSessionName?: (value: string) => void;
 }
 
 const ChatHeader = ({
@@ -22,119 +47,250 @@ const ChatHeader = ({
   setShowHistory,
   showSettings,
   setShowSettings,
-  showTimestamps,
-  setShowTimestamps
+  chatSessions = [],
+  activeChatSessionId = null,
+  onSwitchSession = () => {},
+  onCreateSession = () => {},
+  onDeleteSession = () => {},
+  onRenameSession = () => {},
+  newSessionName = "",
+  setNewSessionName = () => {}
 }: ChatHeaderProps) => {
-  return (
-    <header className={cn(
-      "fixed top-2 sm:top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ease-out",
-      isScrolled && "top-1 sm:top-3",
-      messagesLength === 0 ? "w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-4xl" : "w-auto",
-      messagesLength > 0 && "scale-90 sm:scale-95"
-    )}>
-      <div className={cn(
-        "flex items-center justify-between px-2 sm:px-3 py-1.5 sm:py-2 space-x-2 sm:space-x-3 rounded-xl sm:rounded-2xl",
-        "backdrop-blur-xl bg-white/10 dark:bg-black/10",
-        "border border-white/20 dark:border-white/10",
-        "shadow-2xl shadow-black/5 dark:shadow-white/5"
-      )}>
-        {/* Left side - Back button and logo */}
-        <div className="flex items-center space-x-2">
-          <Link
-            to="/"
-            className={cn(
-              "group flex items-center transition-all duration-300",
-              "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
-            )}
-          >
-            <div className={cn(
-              "w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl flex items-center justify-center transition-all duration-300",
-              "backdrop-blur-md bg-white/10 dark:bg-black/10",
-              "border border-white/20 dark:border-white/10",
-              "group-hover:bg-white/20 dark:group-hover:bg-black/20",
-              "group-hover:border-white/30 dark:group-hover:border-white/20"
-            )}>
-              <ArrowLeft size={14} className="sm:w-4 sm:h-4" />
-            </div>
-          </Link>
+  const [showSessionsMenu, setShowSessionsMenu] = useState(false);
+  const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
+  const [editSessionName, setEditSessionName] = useState("");
+  const [isHeaderExpanded, setIsHeaderExpanded] = useState(false);
 
-          {/* Logo with anime avatar and REI text */}
-          <div className="flex items-center space-x-2">
+  const handleRenameSession = (sessionId: string) => {
+    onRenameSession(sessionId, editSessionName);
+    setEditingSessionId(null);
+    setEditSessionName("");
+  };
+
+  const startEditSession = (session: ChatSession) => {
+    setEditingSessionId(session.id);
+    setEditSessionName(session.name);
+  };
+
+  const hasMessages = messagesLength > 0;
+
+  return (
+    <header 
+      className={cn(
+        "fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ease-out group",
+        hasMessages ? 'w-auto' : 'w-[calc(100%-2rem)] max-w-3xl'
+      )}
+      onMouseEnter={() => hasMessages && setIsHeaderExpanded(true)}
+      onMouseLeave={() => hasMessages && setIsHeaderExpanded(false)}
+    >
+      <div className={cn(
+        "relative overflow-hidden rounded-full transition-all duration-300",
+        "bg-transparent",
+        "backdrop-blur-2xl backdrop-saturate-200",
+        "border border-white/10 dark:border-white/5",
+        "shadow-2xl shadow-black/5 dark:shadow-black/30",
+        hasMessages && !isHeaderExpanded 
+          ? 'px-2 py-2' 
+          : 'px-4 py-2.5'
+      )}>
+        <div className={cn(
+          "relative flex items-center justify-between",
+          hasMessages && !isHeaderExpanded ? 'w-auto' : 'w-full min-w-[300px]'
+        )}>
+          <div className={cn(
+            "flex items-center transition-all duration-300",
+            hasMessages && !isHeaderExpanded ? 'space-x-1' : 'space-x-1 sm:space-x-2'
+          )}>
+            <button
+              onClick={() => window.history.back()}
+              className="group flex items-center transition-all duration-300 hover:scale-110 p-1"
+              aria-label="Back"
+            >
+               <ArrowLeft size={18} className="text-gray-700 dark:text-gray-200" />
+            </button>
+            <img src="/img/image.png" alt="Logo" className={cn("w-8 h-8 rounded-full transition-all duration-300", hasMessages && !isHeaderExpanded && "w-7 h-7")} />
+
             <div className={cn(
-              "w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden transition-all duration-300",
-              "bg-gradient-to-br from-purple-500/20 to-blue-600/20",
-              "border border-purple-400/30 dark:border-purple-300/20",
-              "backdrop-blur-sm shadow-lg"
+              "flex items-center transition-all duration-300 overflow-hidden",
+               hasMessages && !isHeaderExpanded ? 'w-0 scale-0 opacity-0' : 'w-auto scale-100 opacity-100 ml-1 sm:ml-2'
             )}>
-              <img 
-                src="/portfolio/public/img/image.png" 
-                alt="REI AI Assistant" 
-                className="w-full h-full object-cover"
-              />
+              <button
+                onClick={() => setShowSessionsMenu(!showSessionsMenu)}
+                className="relative p-2 rounded-xl text-sm font-medium transition-colors hover:bg-white/10 dark:hover:bg-white/5 text-gray-700 dark:text-gray-300"
+                aria-label="Chat Sessions"
+                title="Chat Sessions"
+              >
+                <MessageSquare size={16} />
+              </button>
+              
+              <button
+                onClick={onCreateSession}
+                className="relative p-2 rounded-xl text-sm font-medium transition-colors hover:bg-white/10 dark:hover:bg-white/5 text-gray-700 dark:text-gray-300"
+                aria-label="New Chat"
+                title="Start a new chat"
+              >
+                <Plus size={16} />
+              </button>
             </div>
-            <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
-              REI
-            </span>
           </div>
+
+            <div className={cn(
+            "flex-1 text-center transition-all duration-300",
+            hasMessages && !isHeaderExpanded ? 'opacity-0 scale-0 w-0' : 'opacity-100 scale-100 w-auto'
+          )}>
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-300 whitespace-nowrap">
+              {chatSessions.find(s => s.id === activeChatSessionId)?.name || "Current Chat"}
+            </span>
         </div>
 
-        {/* Center - Only show when no messages */}
-        {messagesLength === 0 && (
-          <div className="flex-1 flex justify-center">
-            {/* Empty space for center alignment */}
-          </div>
-        )}
-
-        <div className="flex items-center space-x-1 sm:space-x-2">
-          <button
-            onClick={() => setShowTimestamps(!showTimestamps)}
-            aria-label="Toggle timestamps"
-            className={cn(
-              "p-1.5 sm:p-2 rounded-lg sm:rounded-xl transition-all duration-300",
-              "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200",
-              "backdrop-blur-md bg-white/10 dark:bg-black/10",
-              "border border-white/20 dark:border-white/10",
-              "hover:bg-white/20 dark:hover:bg-black/20",
-              showTimestamps && "bg-white/20 dark:bg-black/20"
-            )}
-            title="Toggle Timestamps"
-          >
-            <Clock size={14} className="sm:w-4 sm:h-4" />
-          </button>
-
+          <div className="flex items-center space-x-0.5 sm:space-x-1">
           <button
             onClick={() => setShowHistory(!showHistory)}
-            aria-label="Show chat history"
             className={cn(
-              "p-1.5 sm:p-2 rounded-lg sm:rounded-xl transition-all duration-300",
-              "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200",
-              "backdrop-blur-md bg-white/10 dark:bg-black/10",
-              "border border-white/20 dark:border-white/10",
-              "hover:bg-white/20 dark:hover:bg-black/20"
-            )}
-          >
-            <History size={14} className="sm:w-4 sm:h-4" />
+                "p-1.5 sm:p-2 rounded-xl transition-all duration-300",
+                showHistory 
+                  ? "bg-purple-100/80 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300"
+                  : "hover:bg-white/10 dark:hover:bg-white/5 text-gray-700 dark:text-gray-300"
+              )}
+              aria-label="Chat History"
+            >
+              <History size={16} className="sm:size-[18px]" />
           </button>
 
           <button
             onClick={() => setShowSettings(!showSettings)}
-            aria-label="Open settings"
             className={cn(
-              "p-1.5 sm:p-2 rounded-lg sm:rounded-xl transition-all duration-300",
-              "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200",
-              "backdrop-blur-md bg-white/10 dark:bg-black/10",
-              "border border-white/20 dark:border-white/10",
-              "hover:bg-white/20 dark:hover:bg-black/20"
-            )}
-          >
-            <Settings size={14} className="sm:w-4 sm:h-4" />
+                "p-1.5 sm:p-2 rounded-xl transition-all duration-300",
+                showSettings 
+                  ? "bg-green-100/80 dark:bg-green-900/40 text-green-600 dark:text-green-300"
+                  : "hover:bg-white/10 dark:hover:bg-white/5 text-gray-700 dark:text-gray-300"
+              )}
+              aria-label="Settings"
+            >
+              <Settings size={16} className="sm:size-[18px]" />
           </button>
 
-          <div className="scale-75">
+            <div className="scale-75 transition-transform duration-300 hover:scale-90">
             <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>
+
+      {showSessionsMenu && (
+        <div className={cn(
+          "absolute left-2 sm:left-4 top-14 sm:top-16 w-72 sm:w-80 z-50",
+          "backdrop-blur-2xl bg-white/10 dark:bg-black/20",
+          "border border-white/20 dark:border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl",
+          "overflow-hidden"
+        )}>
+          <div className="p-3 sm:p-4 border-b border-white/20 dark:border-white/10 flex justify-between items-center">
+            <h3 className="font-bold text-gray-900 dark:text-gray-100 text-base sm:text-lg">Chat Sessions</h3>
+            <button 
+              onClick={() => setShowSessionsMenu(false)}
+              className="p-1.5 sm:p-2 rounded-full hover:bg-black/10 dark:hover:bg-white/10"
+              aria-label="Close"
+            >
+              <X size={16} className="text-gray-600 dark:text-gray-300" />
+            </button>
+          </div>
+          
+          <div className="p-3 sm:p-4 border-b border-white/20 dark:border-white/10">
+            <div className="flex space-x-2">
+              <input
+                type="text"
+                value={newSessionName}
+                onChange={(e) => setNewSessionName?.(e.target.value)}
+                placeholder="New chat name..."
+                className={cn(
+                  "flex-1 px-3 py-1.5 text-sm rounded-lg",
+                  "bg-gray-50/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700",
+                  "focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                )}
+              />
+              <button
+                onClick={onCreateSession}
+                className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <PlusCircle size={18} />
+              </button>
+            </div>
+          </div>
+          
+          <div className="max-h-60 overflow-y-auto">
+            {chatSessions.length === 0 ? (
+              <div className="p-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                No saved chats.
+              </div>
+            ) : (
+              <ul className="divide-y divide-white/20 dark:divide-white/10">
+                {chatSessions.map(session => (
+                  <li 
+                    key={session.id}
+                    className={cn(
+                      "p-2.5 sm:p-3 hover:bg-gray-100/50 dark:hover:bg-gray-700/50",
+                      "transition-colors duration-200",
+                      activeChatSessionId === session.id && "bg-blue-500/10 dark:bg-blue-500/20"
+                    )}
+                  >
+                    {editingSessionId === session.id ? (
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="text"
+                          value={editSessionName}
+                          onChange={(e) => setEditSessionName(e.target.value)}
+                          className="flex-1 px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
+                          autoFocus
+                        />
+                        <button
+                          onClick={() => handleRenameSession(session.id)}
+                          className="p-1.5 text-blue-600 dark:text-blue-400"
+                        >
+                          <Save size={16} />
+                        </button>
+                        <button
+                          onClick={() => setEditingSessionId(null)}
+                          className="p-1.5 text-gray-600 dark:text-gray-400"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        <button
+                          onClick={() => onSwitchSession(session.id)}
+                          className="flex-1 flex items-center space-x-2.5 py-1 px-2 text-left rounded-md"
+                        >
+                          <MessageSquare size={16} className="text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
+                            {session.name}
+                          </span>
+                        </button>
+                        <div className="flex items-center space-x-1">
+                          <button
+                            onClick={() => startEditSession(session)}
+                            className="p-1.5 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md"
+                            aria-label="Rename session"
+                          >
+                            <Edit size={14} />
+                          </button>
+                          <button
+                            onClick={() => onDeleteSession(session.id)}
+                            className="p-1.5 text-red-500 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-md"
+                            aria-label="Delete session"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 };
