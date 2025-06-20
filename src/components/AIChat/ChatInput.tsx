@@ -81,7 +81,7 @@ const ChatInput = ({
           "relative w-full max-w-3xl group",
           "backdrop-blur-3xl bg-gradient-to-br from-white/90 via-white/80 to-white/70",
           "dark:bg-gradient-to-br dark:from-black/90 dark:via-black/80 dark:to-black/70",
-          "border-2 border-gray-300/60 dark:border-gray-600/60 rounded-2xl sm:rounded-3xl p-2 sm:p-3",
+          "border-2 border-gray-300/60 dark:border-gray-600/60 rounded-2xl sm:rounded-3xl p-1.5 sm:p-3",
           "shadow-[0_0_50px_rgba(0,0,0,0.1),0_20px_40px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.3)]",
           "dark:shadow-[0_0_50px_rgba(255,255,255,0.05),0_20px_40px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]",
           "before:absolute before:inset-[-3px] before:rounded-[calc(1rem+3px)] sm:before:rounded-[calc(1.5rem+3px)]",
@@ -98,7 +98,7 @@ const ChatInput = ({
               "shadow-[inset_0_1px_2px_rgba(255,255,255,0.3),inset_0_-1px_2px_rgba(0,0,0,0.1)]",
               "dark:shadow-[inset_0_1px_2px_rgba(255,255,255,0.1),inset_0_-1px_2px_rgba(0,0,0,0.3)]"
             )}>
-              <div className="flex items-end min-h-[44px] sm:min-h-[52px]">
+              <div className="flex items-end min-h-[40px] sm:min-h-[52px]">
                 <div className="flex-1 flex items-center">
                   <textarea
                     ref={textareaRef}
@@ -112,15 +112,14 @@ const ChatInput = ({
                     }
                     rows={1}
                     className={cn(
-                      "w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-transparent resize-none",
+                      "w-full px-2.5 sm:px-4 py-2 sm:py-3 bg-transparent resize-none",
                       "text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400",
-                      "focus:outline-none max-h-24 sm:max-h-32 overflow-y-auto",
+                      "focus:outline-none max-h-20 sm:max-h-32 overflow-y-auto",
                       "text-sm leading-relaxed",
-                      "scrollbar-hide"
+                      "custom-scrollbar"
                     )}
                     style={{
-                      scrollbarWidth: 'none',
-                      msOverflowStyle: 'none'
+                      scrollbarWidth: 'thin'
                     }}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
@@ -131,7 +130,7 @@ const ChatInput = ({
                   />
                 </div>
                 
-                <div className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-3 py-1.5 sm:py-2">
+                <div className="flex items-center space-x-0.5 sm:space-x-2 px-1 sm:px-3 py-1 sm:py-2">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -152,7 +151,7 @@ const ChatInput = ({
                     aria-label="Upload Images"
                     title="Upload Images"
                   >
-                    <ImageIcon size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    <ImageIcon size={14} className="sm:w-[18px] sm:h-[18px]" />
                   </button>
                   
                   <input
@@ -175,7 +174,7 @@ const ChatInput = ({
                     aria-label="Attach Files"
                     title="Attach Files"
                   >
-                    <Paperclip size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    <Paperclip size={14} className="sm:w-[18px] sm:h-[18px]" />
                   </button>
                   
                   <button
@@ -188,7 +187,7 @@ const ChatInput = ({
                     aria-label="Select AI Model"
                     title="Select AI Model"
                   >
-                    <Plus size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    <Plus size={14} className="sm:w-[18px] sm:h-[18px]" />
                   </button>
 
                   <DropdownMenu>
@@ -202,10 +201,10 @@ const ChatInput = ({
                         aria-label="AI Modes"
                         title="AI Modes"
                       >
-                        {isWebSearch ? <Search size={16} className="sm:w-[18px] sm:h-[18px]" /> : 
-                         isDeepThinking ? <Brain size={16} className="sm:w-[18px] sm:h-[18px]" /> :
-                         isCreativeMode ? <Lightbulb size={16} className="sm:w-[18px] sm:h-[18px]" /> :
-                         <ChevronDown size={16} className="sm:w-[18px] sm:h-[18px]" />}
+                        {isWebSearch ? <Search size={14} className="sm:w-[18px] sm:h-[18px]" /> : 
+                         isDeepThinking ? <Brain size={14} className="sm:w-[18px] sm:h-[18px]" /> :
+                         isCreativeMode ? <Lightbulb size={14} className="sm:w-[18px] sm:h-[18px]" /> :
+                         <ChevronDown size={14} className="sm:w-[18px] sm:h-[18px]" />}
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent 
@@ -265,12 +264,12 @@ const ChatInput = ({
                     type="submit"
                     disabled={!input.trim() || !apiKey.trim() || isLoading}
                     className={cn(
-                      "relative group flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg transition-all duration-300",
-                      "bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800",
+                      "relative group flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-lg transition-all duration-300",
+                      "bg-gradient-to-r from-blue-500 to-indigo-600",
                       "disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed",
-                      "shadow-[0_4px_20px_rgba(75,85,99,0.4)] hover:shadow-[0_6px_30px_rgba(75,85,99,0.6)]",
-                      "disabled:scale-100",
-                      "border border-gray-500/50"
+                      "shadow-[0_2px_10px_rgba(59,130,246,0.3)] hover:shadow-[0_3px_15px_rgba(59,130,246,0.5)]",
+                      "disabled:shadow-none",
+                      "border border-blue-400/50"
                     )}
                     aria-label="Send message"
                   >
@@ -278,10 +277,10 @@ const ChatInput = ({
                       "flex items-center justify-center transition-all duration-300",
                       "text-white",
                       !input.trim() || !apiKey.trim() || isLoading 
-                        ? "text-gray-300" 
+                        ? "text-gray-200/90" 
                         : ""
                     )}>
-                      <Send size={12} className="sm:w-3.5 sm:h-3.5" />
+                      <Send size={10} className="sm:w-3.5 sm:h-3.5" />
                     </div>
                   </button>
                 </div>
@@ -289,23 +288,23 @@ const ChatInput = ({
               
               {/* Display uploaded files below the input area */}
               {selectedImages.length > 0 && (
-                <div className="px-3 sm:px-4 py-2 border-t border-gray-200/30 dark:border-gray-700/30">
-                  <div className="flex flex-wrap gap-2">
+                <div className="px-2 sm:px-4 py-1.5 sm:py-2 border-t border-gray-200/30 dark:border-gray-700/30">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {selectedImages.map((img, index) => (
                       <div 
                         key={index}
-                        className="relative group flex items-center bg-gray-100/80 dark:bg-gray-800/80 rounded-lg overflow-hidden border border-gray-200/50 dark:border-gray-700/50"
+                        className="relative group flex items-center bg-gray-100/80 dark:bg-gray-800/80 rounded-md overflow-hidden border border-gray-200/50 dark:border-gray-700/50"
                       >
-                        <div className="h-8 w-8 flex items-center justify-center bg-gray-200/80 dark:bg-gray-700/80">
-                          <ImageIcon size={14} className="text-gray-600 dark:text-gray-300" />
+                        <div className="h-6 w-6 sm:h-8 sm:w-8 flex items-center justify-center bg-gray-200/80 dark:bg-gray-700/80">
+                          <ImageIcon size={12} className="sm:size-4 text-gray-600 dark:text-gray-300" />
                         </div>
-                        <div className="px-2 py-1 text-xs truncate max-w-[100px]">
+                        <div className="px-1.5 sm:px-2 py-0.5 sm:py-1 text-xs truncate max-w-[80px] sm:max-w-[100px]">
                           Image {index + 1}
                         </div>
                         <button
                           type="button"
                           onClick={() => removeImage(index)}
-                          className="absolute right-0 top-0 bottom-0 bg-gray-200/80 dark:bg-gray-700/80 px-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute right-0 top-0 bottom-0 bg-gray-200/80 dark:bg-gray-700/80 px-1 sm:px-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
                           aria-label={`Remove image ${index + 1}`}
                         >
                           ×

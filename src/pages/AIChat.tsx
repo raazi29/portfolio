@@ -946,7 +946,7 @@ const AIChat = () => {
       <div className="flex-1 flex flex-col pb-4 sm:pb-6 max-w-4xl mx-auto w-full min-h-0 relative">
         <div 
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto space-y-6 sm:space-y-8 pr-1 sm:pr-2 scroll-smooth custom-scrollbar"
+          className="flex-1 overflow-y-auto space-y-5 pr-1 sm:pr-2 scroll-smooth custom-scrollbar"
         >
           {isDeepThinking && (
             <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-[0.03] dark:opacity-[0.02] pointer-events-none">
@@ -968,20 +968,20 @@ const AIChat = () => {
             const { textParts, codeBlockIndices } = renderMessageWithCodeBlocks(textContent, files);
             
             return (
-              <div key={message.id} className="space-y-3 sm:space-y-4 animate-fade-in">
+              <div key={message.id} className="mb-6 last:mb-3 message-animation">
                 <div className={cn(
-                  "flex",
+                  "flex w-full",
                   message.role === 'user' ? "justify-end" : "justify-start"
                 )}>
                   <div className={cn(
-                      "relative group max-w-[90%] sm:max-w-[85%] rounded-2xl sm:rounded-3xl",
-                    message.role === 'user'
-                        ? "px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-br from-blue-500/10 to-indigo-600/10 dark:from-blue-400/20 dark:to-indigo-500/20 text-gray-800 dark:text-gray-200 border border-blue-300/30 dark:border-blue-400/30 shadow-xl shadow-blue-500/10 dark:shadow-blue-400/20"
-                      : "space-y-4"
+                      "relative group message-container",
+                      message.role === 'user'
+                        ? "user-message-bubble px-4 sm:px-5 py-3 sm:py-3.5 bg-indigo-50/90 dark:bg-indigo-950/40 text-gray-800 dark:text-gray-100 border-0 shadow-sm rounded-t-xl rounded-bl-xl rounded-br-sm max-w-[85%] sm:max-w-[75%] ml-auto"
+                        : "ai-message px-4 sm:px-5 py-3 sm:py-3.5 bg-white/50 dark:bg-gray-800/40 text-gray-800 dark:text-gray-100 shadow-sm border border-gray-200/50 dark:border-gray-700/50 rounded-t-xl rounded-br-xl rounded-bl-sm max-w-[85%] sm:max-w-[75%]"
                   )}>
                       {/* Message hover actions */}
-                      <div className={cn(
-                        "absolute right-2 -top-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50",
+                      <div style={{ zIndex: 1000, opacity: 0 }} className={cn(
+                        "absolute right-2 top-2 group-hover:opacity-100 transition-opacity duration-200",
                         "flex items-center space-x-1 bg-white/90 dark:bg-gray-800/90 rounded-lg shadow-lg p-1",
                         "border border-gray-200/60 dark:border-gray-700/60"
                       )}>
@@ -995,32 +995,6 @@ const AIChat = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                           </svg>
                         </button>
-                        
-                        {message.role === 'user' && (
-                          <button 
-                            onClick={() => handleMessageAction('edit', message)}
-                            className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
-                            aria-label="Edit message"
-                            title="Edit & resubmit"
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                          </button>
-                        )}
-                        
-                        {message.role === 'assistant' && (
-                          <button 
-                            onClick={() => handleMessageAction('regenerate', message)}
-                            className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
-                            aria-label="Regenerate response"
-                            title="Regenerate response"
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                            </svg>
-                          </button>
-                        )}
                       </div>
                       
                       {/* Edit mode UI */}
@@ -1029,19 +1003,20 @@ const AIChat = () => {
                           <textarea
                             value={editContent}
                             onChange={(e) => setEditContent(e.target.value)}
-                            className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                            className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm sm:text-base custom-scrollbar"
                             rows={3}
+                            style={{ scrollbarWidth: 'thin' }}
                           />
                           <div className="flex justify-end space-x-2 mt-2">
                             <button 
                               onClick={() => setIsEditing(null)}
-                              className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                              className="px-2 sm:px-3 py-1 text-xs sm:text-sm rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                             >
                               Cancel
                             </button>
                             <button 
                               onClick={handleEditSubmit}
-                              className="px-3 py-1 rounded bg-blue-600 text-white"
+                              className="px-2 sm:px-3 py-1 text-xs sm:text-sm rounded bg-blue-600 text-white hover:bg-blue-700 transition-colors"
                             >
                               Submit
                             </button>
@@ -1049,7 +1024,7 @@ const AIChat = () => {
                         </div>
                       ) : message.role === 'user' ? (
                       <>
-                        <p className="whitespace-pre-wrap leading-relaxed text-sm sm:text-base font-medium">{message.content}</p>
+                        <p className="whitespace-pre-wrap leading-relaxed text-sm sm:text-base break-words">{message.content}</p>
                         
                         {message.images && message.images.length > 0 && (
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mt-3 sm:mt-4">
@@ -1058,12 +1033,12 @@ const AIChat = () => {
                                 key={index}
                                 src={img}
                                 alt={`Uploaded ${index + 1}`}
-                                className="rounded-xl sm:rounded-2xl max-w-full h-auto border-2 border-blue-300/30 dark:border-blue-400/30 shadow-lg"
+                                className="rounded-xl sm:rounded-2xl max-w-full h-auto border border-indigo-200/50 dark:border-indigo-800/40 shadow-md"
                               />
                             ))}
                           </div>
                         )}
-                          <div className="text-right text-[10px] opacity-60 font-normal mt-1.5 text-blue-400/80 dark:text-blue-400/60">
+                          <div className="text-right text-[10px] opacity-60 font-normal mt-1.5 text-indigo-500/70 dark:text-indigo-400/60">
                             {formatTimestamp(message.timestamp)}
                           </div>
                       </>
@@ -1076,11 +1051,17 @@ const AIChat = () => {
                           return (
                             <React.Fragment key={index}>
                               {textPart.trim() && (
-                                <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-br from-gray-50/90 to-white/90 dark:from-gray-800/90 dark:to-gray-900/90 text-gray-800 dark:text-gray-200 border-2 border-gray-200/50 dark:border-gray-600/50 shadow-xl shadow-gray-500/10 dark:shadow-gray-900/30 rounded-2xl sm:rounded-3xl backdrop-blur-sm">
-                                    <p className="whitespace-pre-wrap leading-relaxed text-sm sm:text-base">
+                                <div className="text-gray-800 dark:text-gray-200 mb-3">
+                                    <p className="whitespace-pre-wrap leading-relaxed text-sm sm:text-base break-words">
                                       {textPart}
                                       {message.isStreaming && index === textParts.length - 1 && (
-                                        <span className="inline-block w-2 h-4 ml-1 bg-current animate-pulse"></span>
+                                        <span className="inline-block ml-1">
+                                          <span className="typing-indicator text-blue-500 dark:text-blue-400">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                          </span>
+                                        </span>
                                       )}
                                     </p>
                                     {isLastTextPart && (
@@ -1095,9 +1076,9 @@ const AIChat = () => {
                                   <>
                                 <CodeBlock 
                                   files={[files[codeBlockIndex]]} 
-                                  className="w-full"
+                                  className="w-full mt-2 mb-2 rounded-lg overflow-hidden"
                                 />
-                                    <div className="text-right text-[10px] opacity-60 font-normal mt-1.5 pr-2 text-gray-500 dark:text-gray-400">
+                                    <div className="text-right text-[10px] opacity-60 font-normal mt-1 pr-2 text-gray-500 dark:text-gray-400">
                                       {formatTimestamp(message.timestamp)}
                                     </div>
                                   </>
@@ -1108,8 +1089,8 @@ const AIChat = () => {
                         
                           {hasCode && files.length > 1 && !textParts.some(p => p.trim()) && (
                             <>
-                          <CodeBlock files={files} className="w-full" />
-                               <div className="text-right text-[10px] opacity-60 font-normal mt-1.5 pr-2 text-gray-500 dark:text-gray-400">
+                          <CodeBlock files={files} className="w-full mt-2 mb-2 rounded-lg overflow-hidden" />
+                               <div className="text-right text-[10px] opacity-60 font-normal mt-1 pr-2 text-gray-500 dark:text-gray-400">
                                 {formatTimestamp(message.timestamp)}
                               </div>
                             </>
@@ -1118,11 +1099,9 @@ const AIChat = () => {
                     )}
                     
                     {message.model && message.role === 'assistant' && (
-                      <div className="flex justify-start">
-                        <div className="px-3 sm:px-4 py-1.5 sm:py-2">
-                          <p className="text-xs opacity-60 font-medium text-gray-600 dark:text-gray-400">
+                      <div className="flex justify-start mt-1">
+                        <div className="text-xs opacity-60 font-normal text-gray-500 dark:text-gray-400">
                             {models.find(m => m.id === message.model)?.name || message.model}
-                          </p>
                         </div>
                       </div>
                     )}
@@ -1154,11 +1133,11 @@ const AIChat = () => {
           
           {isLoading && (
             <div className="flex justify-start animate-fade-in">
-              <div className="bg-gradient-to-br from-gray-50/90 to-white/90 dark:from-gray-800/90 dark:to-gray-900/90 border-2 border-gray-200/50 dark:border-gray-600/50 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl sm:rounded-3xl shadow-xl shadow-gray-500/10 dark:shadow-gray-900/30 backdrop-blur-sm">
-                <div className="flex space-x-1.5 sm:space-x-2">
-                  <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              <div className="py-3 sm:py-4">
+                <div className="typing-indicator text-gray-500 dark:text-gray-400">
+                  <span></span>
+                  <span></span>
+                  <span></span>
                 </div>
               </div>
             </div>

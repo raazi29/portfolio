@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { cn } from '@/lib/util';
 import LottieAnimation from "./LottieAnimation";
@@ -136,11 +135,11 @@ const Hero = () => {
               style={{ animationDelay: "0.7s" }}
             >
               <div onClick={handleViewProjectsClick}>
-                <KeycapButton href="#projects">
+                <KeycapButton href="#projects" className="lightsaber-interactive">
                   View My Projects
                 </KeycapButton>
               </div>
-              <a href="#contact">
+              <a href="#contact" className="lightsaber-interactive">
                 <ShimmerButton className="shadow-2xl">
                   <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white lg:text-lg">
                     Contact Me

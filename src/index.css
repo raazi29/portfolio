@@ -203,6 +203,103 @@
 }
 
 @layer components {
+  .apple-glass-effect {
+    position: relative;
+    border-radius: inherit;
+    overflow: hidden;
+    box-shadow: 
+      0 0.5px 0 0.5px rgba(255, 255, 255, 0.08) inset,
+      0 -0.5px 0 0.5px rgba(0, 0, 0, 0.1) inset,
+      0 4px 16px rgba(0, 0, 0, 0.12),
+      0 0 30px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .apple-glass-effect::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.8px;
+    background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.5) 25%,
+      rgba(255, 255, 255, 0.25) 50%,
+      rgba(255, 255, 255, 0.15) 75%,
+      transparent 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .apple-glass-effect::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.15) 40%,
+      rgba(255, 255, 255, 0.05) 80%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .dark .apple-glass-effect {
+    box-shadow: 
+      0 0.5px 0 0.5px rgba(255, 255, 255, 0.4) inset,
+      0 -0.5px 0 0.5px rgba(0, 0, 0, 0.2) inset,
+      0 4px 16px rgba(0, 0, 0, 0.35),
+      0 0 30px rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  .dark .apple-glass-effect::before {
+    background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.4) 25%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.08) 75%,
+      transparent 100%
+    );
+  }
+
+  .dark .apple-glass-effect::after {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0.12) 40%,
+      rgba(255, 255, 255, 0.04) 80%
+    );
+  }
+
+  /* Mobile optimizations for glass effect */
+  @media (max-width: 640px) {
+    .apple-glass-effect {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.06);
+    }
+    
+    .dark .apple-glass-effect {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    
+    .apple-glass-effect::before {
+      padding: 1.5px;
+    }
+  }
+
   .text-mask-image {
     background-clip: text;
     -webkit-background-clip: text;
@@ -940,18 +1037,218 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(156, 163, 175, 0.5); /* gray-400 with 50% opacity */
-  border-radius: 4px;
+  background-color: rgba(59, 130, 246, 0.3); /* blue-400 with 30% opacity */
+  border-radius: 6px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(156, 163, 175, 0.7); /* gray-400 with 70% opacity */
+  background-color: rgba(59, 130, 246, 0.5); /* blue-400 with 50% opacity */
 }
 
 /* For Firefox */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
+}
+
+/* Fix for message action buttons */
+.message-container .absolute {
+  z-index: 50;
+  pointer-events: auto !important;
+}
+
+.message-container:hover .absolute {
+  opacity: 1 !important;
+}
+
+/* New typing indicator animation */
+@keyframes typingDot {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-1px);
+    opacity: 1;
+  }
+}
+
+.typing-indicator span {
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: currentColor;
+  margin: 0 1px;
+  animation: typingDot 1s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* User message hover effects */
+.user-message-bubble {
+  position: relative;
+  transition: all 0.3s ease;
+  z-index: 1;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.user-message-bubble::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg, 
+    rgba(59, 130, 246, 0.3), 
+    rgba(99, 102, 241, 0.4), 
+    rgba(124, 58, 237, 0.3)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.user-message-bubble:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(59, 130, 246, 0.1);
+}
+
+.dark .user-message-bubble:hover {
+  box-shadow: 0 3px 10px rgba(59, 130, 246, 0.2);
+}
+
+.user-message-bubble:hover::before {
+  opacity: 1;
+}
+
+/* Improved long text handling */
+.break-words {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Ensure all code blocks don't overflow */
+pre, code {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Chat message animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-animation {
+  animation: fadeInUp 0.3s ease-out forwards;
+}
+
+/* Mobile adjustments for message bubbles */
+@media (max-width: 640px) {
+  .user-message-bubble {
+    border-radius: 1rem;
+    padding: 0.75rem 1rem;
+  }
+  
+  /* Make message container take more width on mobile */
+  .message-container-mobile {
+    max-width: 92% !important;
+  }
+}
+
+/* Fix chat bubble overflow issues */
+.message-container {
+  overflow-x: hidden;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* More ChatGPT-like AI message styling */
+.ai-message {
+  padding-left: 0;
+  padding-right: 0;
+  transition: all 0.3s ease;
+}
+
+.ai-message:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.dark .ai-message:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Ensure code blocks remain readable but don't overflow */
+pre {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Responsive images in chat */
+.chat-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+/* Custom scrollbar for chat input */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(59, 130, 246, 0.3); /* blue-400 with 30% opacity */
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(59, 130, 246, 0.5); /* blue-400 with 50% opacity */
+}
+
+/* For Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
+}
+
+/* Fix for message action buttons */
+.message-container .absolute {
+  z-index: 50;
+  pointer-events: auto !important;
+}
+
+.message-container:hover .absolute {
+  opacity: 1 !important;
 }
