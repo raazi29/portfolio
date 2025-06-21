@@ -84,9 +84,9 @@ const Navbar = () => {
         }
       }
       
-      // Set home as active if at top
+      // Set hero as active if at top
       if (window.scrollY < 100) {
-        setActiveSection('home');
+        setActiveSection('hero');
       }
     };
     
@@ -119,25 +119,35 @@ const Navbar = () => {
   };
 
   const handleNavClick = async (sectionId: string) => {
+    console.log('Nav click:', sectionId, 'isMenuOpen:', isMenuOpen); // Debug log
     setIsLoading(true);
     
+    // Close mobile menu first
+    if (isMenuOpen) {
+      console.log('Closing mobile menu'); // Debug log
+      setIsMenuOpen(false);
+      document.body.style.overflow = '';
+    }
+    
     try {
-      if (sectionId === 'home') {
+      // Add a small delay to ensure menu closes before scrolling
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      if (sectionId === 'hero') {
+        console.log('Scrolling to top'); // Debug log
         scrollToTop();
       } else {
         const element = document.getElementById(sectionId);
+        console.log('Element found:', element, 'for section:', sectionId); // Debug log
         if (element) {
-          const offset = window.innerWidth < 768 ? 100 : 80;
-          window.scrollTo({
-            top: element.offsetTop - offset,
-            behavior: 'smooth'
+          console.log('Using scrollIntoView for section:', sectionId); // Debug log
+          element.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
           });
+        } else {
+          console.log('Element not found for section:', sectionId); // Debug log
         }
-      }
-      
-      if (isMenuOpen) {
-        setIsMenuOpen(false);
-        document.body.style.overflow = '';
       }
     } finally {
       setTimeout(() => setIsLoading(false), 300);
@@ -150,7 +160,7 @@ const Navbar = () => {
     try {
       // Create a dummy resume download - replace with your actual resume file
       const link = document.createElement('a');
-      link.href = '/resume.pdf'; // Replace with your actual resume file path
+      link.href = '/public/resume/Resume.pdf'; // Replace with your actual resume file path
       link.download = 'Mohammed_Raazi_Resume.pdf';
       document.body.appendChild(link);
       link.click();
@@ -166,7 +176,7 @@ const Navbar = () => {
   };
 
   const navItems = [
-    { id: 'home', label: 'Home' },
+    { id: 'hero', label: 'Home' },
     { id: 'about', label: 'About' },
     { id: 'features', label: 'Skills' },
     { id: 'projects', label: 'Projects' },
@@ -198,7 +208,7 @@ const Navbar = () => {
         <div className="relative flex items-center justify-between">
           {/* Logo with R */}
           <button 
-            onClick={() => handleNavClick('home')}
+            onClick={() => handleNavClick('hero')}
             className="group flex items-center transition-all duration-300 hover:scale-110"
             aria-label="Home"
           >
@@ -344,7 +354,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       <div className={cn(
-        "fixed inset-0 z-40 md:hidden transition-all duration-300 ease-out",
+        "fixed inset-0 z-[9999] md:hidden transition-all duration-300 ease-out pointer-events-auto",
         isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
       )}>
         {/* Backdrop */}
@@ -366,6 +376,7 @@ const Navbar = () => {
           "shadow-2xl shadow-black/20 dark:shadow-black/40",
           "rounded-b-3xl rounded-t-3xl",
           "before:absolute before:inset-0 before:rounded-[inherit] before:pointer-events-none before:bg-gradient-to-br before:from-white/30 before:to-transparent before:opacity-40 before:blur-sm",
+          "pointer-events-auto",
           isMenuOpen ? "translate-y-0 scale-100 opacity-100" : "-translate-y-4 scale-95 opacity-0"
         )}>
           {/* Top bar with close button */}
@@ -403,7 +414,10 @@ const Navbar = () => {
             {navItems.map((item, index) => (
               <button
                 key={item.id}
-                onClick={() => handleNavClick(item.id)}
+                onClick={() => {
+                  console.log('Mobile menu click:', item.id);
+                  handleNavClick(item.id);
+                }}
                 disabled={isLoading}
                 className={cn(
                   "text-left px-3 py-2.5 rounded-2xl transition-all duration-200",
@@ -412,6 +426,7 @@ const Navbar = () => {
                   "hover:translate-x-1 hover:shadow-sm hover:shadow-white/10 dark:hover:shadow-white/5",
                   "backdrop-blur-sm",
                   "disabled:opacity-50 disabled:cursor-not-allowed",
+                  "pointer-events-auto",
                   activeSection === item.id 
                     ? "text-gray-900 dark:text-white bg-white/15 dark:bg-white/10 shadow-[0_0_12px_2px_rgba(255,255,255,0.18)] dark:shadow-[0_0_16px_2px_rgba(255,255,255,0.10)]" 
                     : "text-gray-800 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white",
