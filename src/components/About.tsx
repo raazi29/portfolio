@@ -1,192 +1,123 @@
-import React, { useEffect, useRef } from "react";
-import { cn } from '@/lib/util';
-import { GraduationCap, MapPin, Code, Database, Brain, TrendingUp } from "lucide-react";
+import React, { useRef, useState, useLayoutEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import ParticlesBackground from "./ParticlesBackground";
+
+const ParallaxText = ({ children, progress, range }) => {
+  const gap = range[1] - range[0];
+  const inputRange = [range[0], range[0] + gap * 0.2, range[1] - gap * 0.2, range[1]];
+
+  const opacity = useTransform(progress, inputRange, [0.15, 1, 1, 0.15]);
+  const filter = useTransform(
+    progress,
+    inputRange,
+    ['blur(12px)', 'blur(0px)', 'blur(0px)', 'blur(12px)']
+  );
+  
+  return (
+    <motion.span
+      style={{ opacity, filter }}
+      className="block text-4xl md:text-5xl lg:text-7xl font-serif font-bold text-center text-gray-800 dark:text-gray-200 tracking-tight"
+    >
+      {children}
+    </motion.span>
+  );
+};
 
 const About = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef(null);
+  const contentRef = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.target instanceof HTMLElement) {
-            const elements = entry.target.querySelectorAll<HTMLElement>(".fade-in-element");
-            elements.forEach((el, index) => {
-              setTimeout(() => {
-                el.classList.add("animate-fade-in");
-              }, index * 100);
-            });
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+  const [contentHeight, setContentHeight] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(0);
 
-    const currentSection = sectionRef.current;
-    if (currentSection) {
-      observer.observe(currentSection);
-    }
-
-    return () => {
-      if (currentSection) {
-        observer.unobserve(currentSection);
+  useLayoutEffect(() => {
+    const measure = () => {
+      if (contentRef.current) {
+        setContentHeight(contentRef.current.offsetHeight);
       }
+      setWindowHeight(window.innerHeight);
     };
+    
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
   }, []);
 
-  const highlights = [
-    {
-      icon: Brain,
-      title: "AI & Machine Learning",
-      description: "Advanced knowledge in AI algorithms and ML implementations",
-      gradient: "from-purple-500 to-pink-500",
-      bgGradient: "from-purple-50 to-purple-100",
-      darkBgGradient: "from-purple-900/20 to-pink-900/20",
-      iconBg: "bg-purple-500",
-      textColor: "text-purple-700 dark:text-purple-300"
-    },
-    {
-      icon: Database,
-      title: "Data Analytics",
-      description: "Expert in data visualization and statistical analysis",
-      gradient: "from-blue-500 to-cyan-500",
-      bgGradient: "from-blue-50 to-blue-100",
-      darkBgGradient: "from-blue-900/20 to-cyan-900/20",
-      iconBg: "bg-blue-500",
-      textColor: "text-blue-700 dark:text-blue-300"
-    },
-    {
-      icon: Code,
-      title: "Full-Stack Development",
-      description: "Proficient in modern web technologies and frameworks",
-      gradient: "from-green-500 to-emerald-500",
-      bgGradient: "from-green-50 to-green-100",
-      darkBgGradient: "from-green-900/20 to-emerald-900/20",
-      iconBg: "bg-green-500",
-      textColor: "text-green-700 dark:text-green-300"
-    },
-    {
-      icon: TrendingUp,
-      title: "Business Intelligence",
-      description: "Transforming data into actionable business insights",
-      gradient: "from-orange-500 to-red-500",
-      bgGradient: "from-orange-50 to-orange-100",
-      darkBgGradient: "from-orange-900/20 to-red-900/20",
-      iconBg: "bg-orange-500",
-      textColor: "text-orange-700 dark:text-orange-300"
-    }
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, -(contentHeight > windowHeight ? contentHeight - windowHeight : 0)]
+  );
+
+  const aboutContent = [
+    "I'm Mohammed Raazi",
+    "An aspiring Data Analyst",
+    "Studying AI & Data Science.",
+    " ",
+    "My expertise includes",
+    "AI & Machine Learning",
+    "Data Analytics",
+    "AI Development",
+    "and Full-Stack Development.",
+    " ",
+    "Based in Bangalore, India",
+    "I'm available for remote work",
+    "and open to new opportunities.",
   ];
 
+  const totalLines = aboutContent.length;
+  const gap = 1 / totalLines;
+
+  const navigate = useNavigate();
+
   return (
-    <section
-      className="py-12 sm:py-16 md:py-20 bg-gray-50 dark:bg-gray-900 relative overflow-hidden"
-      id="about"
-      ref={sectionRef}
-    >
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-r from-pulse-400/20 to-orange-400/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-pulse-300/10 to-blue-300/10 rounded-full blur-3xl animate-pulse animation-delay-2000"></div>
-      </div>
+    <div id="about" ref={sectionRef} className="relative h-[800vh] bg-gradient-to-b from-gray-50 via-gray-100 to-gray-200 dark:from-[#111] dark:via-[#111] dark:to-black">
+      <ParticlesBackground />
+      <div className="sticky top-0 h-screen overflow-hidden">
+        <motion.div ref={contentRef} style={{ y }} className="flex flex-col gap-8 items-center justify-center px-4 py-[50vh]">
+          {aboutContent.map((text, i) => {
+            const start = i * gap;
+            const end = start + gap;
 
-      <div className="section-container relative">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-white/80 dark:bg-white/10 backdrop-blur-xl text-pulse-700 dark:text-pulse-300 border border-pulse-200/30 dark:border-white/20 shadow-lg opacity-0 fade-in-element mx-auto w-fit mb-6">
-              <span>About Me</span>
-            </div>
+            if (i === aboutContent.length - 1) {
+              const textOpacity = useTransform(scrollYProgress, [end - 0.05, end], [1, 0]);
+              const buttonOpacity = useTransform(scrollYProgress, [end - 0.05, end], [0, 1]);
+              const buttonScale = useTransform(scrollYProgress, [end - 0.05, end], [0.8, 1]);
 
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold tracking-tight bg-gradient-to-r from-gray-900 via-pulse-600 to-gray-900 dark:from-gray-100 dark:via-pulse-400 dark:to-gray-100 bg-clip-text text-transparent opacity-0 fade-in-element text-center mb-8">
-              Passionate about Data-Driven Innovation
-            </h2>
-
-            <div className="max-w-4xl mx-auto opacity-0 fade-in-element">
-              <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed text-center mb-6 font-medium">
-                I'm Mohammed Raazi, an aspiring Data Analyst pursuing B.E. in Artificial Intelligence & Data Science.
-                      With a strong foundation in Python, SQL, Machine Learning,
-                and AI-based applications, I'm passionate about transforming data into actionable insights.
-              </p>
-
-              <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed text-center">
-                Currently focused on healthcare and accessibility analytics, I bring hands-on experience in FastAPI,
-                Python,SQL and React, with a strong enthusiasm for contributing to impactful, data-driven projects.
-              </p>
-            </div>
-          </div>
-
-          {/* Highlights Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 opacity-0 fade-in-element">
-            {highlights.map((highlight, index) => (
-              <div 
-                key={index}
-                className={cn(
-                  "group relative overflow-hidden rounded-2xl p-8 text-center transition-all duration-300",
-                  "bg-white dark:bg-gray-800/90 backdrop-blur-xl",
-                  "border border-gray-200/50 dark:border-gray-700/50",
-                  "hover:shadow-lg hover:-translate-y-2 transform-gpu",
-                  "shadow-sm"
-                )}
-              >
-                <div className="relative z-10">
-                  <div className={cn(
-                    "w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4 transition-all duration-300",
-                    highlight.iconBg,
-                    "group-hover:scale-110 transform-gpu",
-                    "shadow-sm"
-                  )}>
-                    <highlight.icon className="w-8 h-8 text-white" />
-                  </div>
-                  
-                  <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-3 text-lg transition-all duration-300">
-                    {highlight.title}
-                  </h4>
-                  
-                  <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300 leading-relaxed font-medium">
-                    {highlight.description}
-                  </p>
+              return (
+                <div key={i} className="relative">
+                  <ParallaxText progress={scrollYProgress} range={[start, end]}>
+                    <motion.span style={{ opacity: textOpacity }}>{text}</motion.span>
+                  </ParallaxText>
+                  <motion.button
+                    style={{ opacity: buttonOpacity, scale: buttonScale }}
+                    className="absolute inset-0 w-full h-full text-4xl md:text-5xl lg:text-7xl font-serif font-bold tracking-tight"
+                    onClick={() => navigate("/#projects")}
+                  >
+                    View My Work
+                  </motion.button>
                 </div>
-              </div>
-            ))}
-          </div>
+              );
+            }
 
-          {/* Personal Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 opacity-0 fade-in-element max-w-5xl mx-auto">
-            <div className="group relative overflow-hidden bg-white dark:bg-gray-800/90 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-10 text-center hover:shadow-lg hover:-translate-y-2 transition-all duration-300 transform-gpu shadow-sm">
-              <div className="relative z-10">
-                <div className="w-20 h-20 bg-gradient-to-br from-pulse-500 to-orange-600 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-all duration-300 shadow-sm transform-gpu">
-                  <GraduationCap className="w-10 h-10 text-white" />
-                </div>
-                <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-4 text-xl transition-all duration-300">
-                  Education
-                </h4>
-                <p className="text-gray-700 dark:text-gray-300 font-semibold text-lg mb-2">B.E. in AI & Data Science</p>
-                <p className="text-gray-600 dark:text-gray-400 font-medium mb-2">Don Bosco Institute of Technology</p>
-                <p className="text-gray-500 dark:text-gray-500 font-medium">Bangalore, India</p>
-              </div>
-            </div>
-
-            <div className="group relative overflow-hidden bg-white dark:bg-gray-800/90 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-10 text-center hover:shadow-lg hover:-translate-y-2 transition-all duration-300 transform-gpu shadow-sm">
-              <div className="relative z-10">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-white-600 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-all duration-300 shadow-sm transform-gpu">
-                  <MapPin className="w-10 h-10 text-white" />
-                </div>
-                <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-4 text-xl transition-all duration-300">
-                  Location & Availability
-                </h4>
-                <p className="text-gray-700 dark:text-gray-300 font-semibold text-lg mb-2">Bangalore, India</p>
-                <p className="text-gray-600 dark:text-gray-400 font-medium mb-4">Available for Remote Work</p>
-                <div className="inline-flex items-center px-4 py-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 font-medium rounded-full border border-emerald-200 dark:border-emerald-500/30 shadow-sm transition-all duration-300">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full mr-2 animate-pulse"></div>
-                  Open to Opportunities
-                </div>
-              </div>
-            </div>
-          </div>
+            if (text === " ") {
+              return <div key={i} className="h-16 md:h-24"></div>;
+            }
+            return (
+              <ParallaxText key={i} progress={scrollYProgress} range={[start, end]}>
+                {text}
+              </ParallaxText>
+            );
+          })}
+        </motion.div>
         </div>
       </div>
-    </section>
   );
 };
 
