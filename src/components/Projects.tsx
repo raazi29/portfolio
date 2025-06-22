@@ -87,11 +87,11 @@ const Projects = () => {
       description: "Developed an AI-driven learning platform offering personalized educational content, study planners, and multilingual support. Integrated AI-powered chatbot for real-time query handling and dynamic resource recommendations.",
       techStack: ["FastAPI", "React.js", "Python", "MongoDB", "Vercel", "AI APIs"],
       liveLink: "https://edu-genie-lab--five.vercel.app",
-      image: "https://i.ibb.co/CRkRszY/edugenie.png",
+      image: "/public/img/edugenie.png",
       slug: "edu-genie",
       githubLink: undefined,
       metrics: {
-        users: "1,200+ active learners",
+        users: "200+ active learners",
         engagement: "85% completion rate",
         languages: "5+ languages supported"
       }
@@ -101,7 +101,7 @@ const Projects = () => {
       description: "Created a FastAPI-based OCR and text-to-speech pipeline improving accessibility for visually impaired users. Deployed a fully accessible web app achieving 97% accessibility compliance with enhanced engagement features.",
       techStack: ["FastAPI", "Python", "OCR", "Accessibility APIs","Flutter","React.js","Dart"],
       liveLink: "https://audio-stem.vercel.app",
-      image: "https://i.ibb.co/ynzWR1wL/stem.png",
+      image: "/public/img/STEM.png",
       slug: "stemsense",
       githubLink: undefined,
       metrics: {
@@ -129,7 +129,7 @@ const Projects = () => {
       description: "A comprehensive platform focused on providing innovative solutions and services. Built with modern web technologies for optimal performance and user experience.",
       techStack: ["React.js", "FastAPI", "Python", "Vercel"],
       liveLink: "https://aarambh-red.vercel.app",
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80",
+      image: "/public/img/Aarambh.png",
       slug: "aarambh",
       githubLink: undefined,
       metrics: {
