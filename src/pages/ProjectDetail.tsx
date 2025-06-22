@@ -65,9 +65,9 @@ const ProjectDetail = () => {
       description: "Developed an AI-driven learning platform offering personalized educational content, study planners, and multilingual support. Integrated AI-powered chatbot for real-time query handling and dynamic resource recommendations.",
       fullDescription: "Edu-Genie Lab transforms the educational landscape by providing personalized learning experiences powered by artificial intelligence. The platform adapts to individual learning styles and provides customized content recommendations.",
       techStack: ["FastAPI", "React.js", "Python", "MongoDB", "Vercel", "AI APIs"],
-      image: "public\img\edugenie.png",
+      image: "/public/img/edugenie.png",
       images: [
-        "https://i.ibb.co/CRkRszY/edugenie.png",
+        "/public/img/edugenie.png",
         "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=800&q=80"
       ],
