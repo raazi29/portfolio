@@ -3,7 +3,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Editor } from '@monaco-editor/react';
 import { Copy, Edit, Save, Undo, ChevronDown, ChevronRight, FileText, Check } from 'lucide-react';
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useToast } from '@/hooks/use-toast';
 

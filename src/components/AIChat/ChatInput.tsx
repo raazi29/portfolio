@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Send, Search, Brain, Lightbulb, ChevronDown, ImageIcon, Paperclip, Plus, FileText, File } from 'lucide-react';
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
   DropdownMenuContent,

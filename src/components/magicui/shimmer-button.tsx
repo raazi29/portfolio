@@ -1,5 +1,5 @@
 
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 import React from "react";
 
 const ShimmerButton = React.forwardRef<

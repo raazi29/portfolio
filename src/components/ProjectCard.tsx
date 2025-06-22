@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 import { ExternalLink, Github, Star, ArrowRight, Eye } from "lucide-react";
 
 interface ProjectCardProps {

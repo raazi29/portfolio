@@ -6,7 +6,7 @@ import {
   Edit,
   Trash2,
 } from 'lucide-react';
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 
 interface Message {
   id: string;

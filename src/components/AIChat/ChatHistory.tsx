@@ -1,6 +1,6 @@
 import React from 'react';
 import { X } from 'lucide-react';
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 
 interface ChatHistoryProps {
   showHistory: boolean;

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 
 const AIChatbot = () => {

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, ExternalLink, Globe, Users, Zap, Clock, Award, CheckCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 
 const AarambhProject = () => {
   const sectionRef = useRef<HTMLDivElement>(null);

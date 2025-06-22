@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 import { Menu, X, Download, Zap, Settings } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import AIChatbot from "./AIChatbot";

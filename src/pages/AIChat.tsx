@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Brain, MessageSquare } from 'lucide-react';
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import CodeBlock from '@/components/CodeBlock';
 import { parseCodeBlocks, renderMessageWithCodeBlocks } from '@/utils/codeBlockParser';

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 
 interface FeatureCardProps {
   icon: React.ReactNode;

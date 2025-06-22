@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 import { Settings, X, Palette, Zap, Ruler, Sparkles, Volume2 } from "lucide-react";
 
 interface LightsaberSettings {

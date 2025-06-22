@@ -1,7 +1,7 @@
 
 import React, { useState, useRef } from 'react';
 import { Upload, Image, FileText } from 'lucide-react';
-import { cn } from '@/lib/util';
+import { cn } from '@/lib/utils';
 
 interface DragDropZoneProps {
   onFileDrop: (files: File[]) => void;
