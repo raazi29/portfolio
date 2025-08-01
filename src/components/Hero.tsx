@@ -105,10 +105,10 @@ const Hero = () => {
       <div className="absolute -top-[10%] -right-[5%] w-1/2 h-[70%] bg-pulse-gradient opacity-20 blur-3xl rounded-full"></div>
       
       <div className="container px-4 sm:px-6 lg:px-8" ref={containerRef}>
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-center">
-          <div className="w-full lg:w-1/2">
+        <div className="flex flex-col gap-6 lg:gap-12 items-center">
+          <div className="w-full text-center">
             <div 
-              className="pulse-chip mb-3 sm:mb-6 opacity-0 animate-fade-in" 
+              className="pulse-chip mb-3 sm:mb-6 opacity-0 animate-fade-in inline-flex"
               style={{ animationDelay: "0.1s" }}
             >
               <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-pulse-500 text-white mr-2">01</span>
@@ -125,13 +125,13 @@ const Hero = () => {
             
             <p 
               style={{ animationDelay: "0.5s" }} 
-              className="section-subtitle mt-3 sm:mt-6 mb-4 sm:mb-8 leading-relaxed opacity-0 animate-fade-in text-white font-medium text-base sm:text-lg text-left drop-shadow-lg"
+              className="section-subtitle mt-3 sm:mt-6 mb-4 sm:mb-8 leading-relaxed opacity-0 animate-fade-in text-white font-medium text-base sm:text-lg text-center drop-shadow-lg max-w-4xl mx-auto"
             >
               Aspiring Data Analyst with expertise in Python, SQL, Machine Learning, and AI-based applications. Passionate about creating data-driven insights and accessible technology solutions.
             </p>
             
             <div 
-              className="flex flex-wrap gap-4 justify-center sm:justify-start opacity-0 animate-fade-in" 
+              className="flex flex-wrap gap-4 justify-center opacity-0 animate-fade-in"
               style={{ animationDelay: "0.7s" }}
             >
               <div onClick={handleViewProjectsClick}>
@@ -147,33 +147,6 @@ const Hero = () => {
                 </ShimmerButton>
               </a>
             </div>
-          </div>
-          
-          <div className="w-full lg:w-1/2 relative mt-6 lg:mt-0">
-            {lottieData ? (
-              <div className="relative z-10 animate-fade-in" style={{ animationDelay: "0.9s" }}>
-                <LottieAnimation 
-                  animationPath={lottieData} 
-                  className="w-full h-auto max-w-lg mx-auto"
-                  loop={true}
-                  autoplay={true}
-                />
-              </div>
-            ) : (
-              <>
-              <div className="absolute inset-0 bg-dark-900 rounded-2xl sm:rounded-3xl -z-10 shadow-xl"></div>
-              <div className="relative transition-all duration-500 ease-out overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl">
-                <img 
-                  ref={imageRef} 
-                  src="/img/robo.png" 
-                  alt="Mohammed Raazi Profile" 
-                  className="w-full h-auto object-cover transition-transform duration-500 ease-out" 
-                  style={{ transformStyle: 'preserve-3d' }} 
-                />
-                <div className="absolute inset-0" style={{ backgroundImage: 'url("/hero-image.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', mixBlendMode: 'overlay', opacity: 0.5 }}></div>
-              </div>
-              </>
-            )}
           </div>
         </div>
       </div>

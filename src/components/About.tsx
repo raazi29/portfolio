@@ -17,7 +17,7 @@ const ParallaxText = ({ children, progress, range }) => {
   return (
     <motion.span
       style={{ opacity, filter }}
-      className="block text-4xl md:text-5xl lg:text-7xl font-serif font-bold text-center text-gray-800 dark:text-gray-200 tracking-tight"
+      className="block text-4xl md:text-5xl lg:text-7xl font-sans font-bold text-center text-gray-800 dark:text-gray-200 tracking-tight"
     >
       {children}
     </motion.span>
@@ -97,7 +97,7 @@ const About = () => {
                   </ParallaxText>
                   <motion.button
                     style={{ opacity: buttonOpacity, scale: buttonScale }}
-                    className="absolute inset-0 w-full h-full text-4xl md:text-5xl lg:text-7xl font-serif font-bold tracking-tight"
+                    className="absolute inset-0 w-full h-full text-4xl md:text-5xl lg:text-7xl font-sans font-bold tracking-tight"
                     onClick={() => navigate("/#projects")}
                   >
                     View My Work
