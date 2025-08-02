@@ -43,6 +43,11 @@ lerna-debug.log*
 .vercel
 .netlify
 *.local
-.cursor\
 
-.cursor\rules\hallu.mdc
+# Development tools
+.cursor/
+.kiro/
+
+# Temporary files
+*.tmp
+*.temp
