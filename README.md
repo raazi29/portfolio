@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 Modern React Portfolio
+#  Portfolio
 
 <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=3000&pause=1000&color=6366F1&center=true&vCenter=true&width=435&lines=Full+Stack+Developer;React+%26+TypeScript+Expert;UI%2FUX+Enthusiast;Always+Learning+%F0%9F%92%A1" alt="Typing SVG" />
 
