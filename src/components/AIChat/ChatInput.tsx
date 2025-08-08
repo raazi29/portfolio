@@ -251,7 +251,7 @@ const ChatInput = ({
                         }}
                         className={cn(
                           "flex items-center space-x-2 cursor-pointer",
-                          isCreativeMode && "bg-orange-50 dark:bg-orange-950/30 text-orange-700 dark:text-orange-300"
+                          isCreativeMode && "bg-pulse-50 dark:bg-pulse-950/30 text-pulse-700 dark:text-pulse-300"
                         )}
                       >
                         <Lightbulb size={16} />

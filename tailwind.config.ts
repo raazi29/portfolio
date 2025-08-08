@@ -63,19 +63,19 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom colors for Pulse Robot with darker variants
+				// Custom colors for Pulse Robot with elegant slate blue variants
 				pulse: {
-					"50": "#fff7ed",
-					"100": "#ffedd5",
-					"200": "#fed7aa",
-					"300": "#fdba74",
-					"400": "#fb923c",
-					"500": "#f97316", // Primary orange
-					"600": "#ea580c",
-					"700": "#c2410c",
-					"800": "#9a3412",
-					"900": "#7c2d12",
-					"950": "#431407",
+					"50": "#f8fafc",
+					"100": "#f1f5f9",
+					"200": "#e2e8f0",
+					"300": "#cbd5e1",
+					"400": "#94a3b8",
+					"500": "#64748b", // Primary slate blue
+					"600": "#475569",
+					"700": "#334155",
+					"800": "#1e293b",
+					"900": "#0f172a",
+					"950": "#020617",
 				},
 				dark: {
 					"900": "#0a0a0a", // True black
@@ -145,7 +145,7 @@ export default {
 			backgroundImage: {
 				'hero-gradient': 'linear-gradient(90deg, hsla(24, 100%, 83%, 1) 0%, hsla(341, 91%, 68%, 1) 100%)',
 				'hero-gradient-2': 'linear-gradient(90deg, hsla(39, 100%, 77%, 1) 0%, hsla(22, 90%, 57%, 1) 100%)',
-				'pulse-gradient': 'linear-gradient(180deg, rgba(249,115,22,0.8) 0%, rgba(249,115,22,0) 100%)',
+				'pulse-gradient': 'linear-gradient(180deg, rgba(100,116,139,0.8) 0%, rgba(100,116,139,0) 100%)',
 				'shimmer-gradient': 'linear-gradient(90deg, transparent 30%, rgba(192,192,192,0.8) 50%, transparent 70%)',
 				'dark-gradient': 'linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.95) 100%)',
 			},

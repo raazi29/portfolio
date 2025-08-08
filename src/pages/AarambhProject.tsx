@@ -189,7 +189,7 @@ const AarambhProject = () => {
                     {techStack.map((tech, index) => (
                       <span 
                         key={index}
-                        className="px-3 py-1 bg-gradient-to-r from-pulse-50 to-orange-50 dark:from-purple-900/30 dark:to-orange-900/30 text-pulse-600 dark:text-purple-300 rounded-full text-sm font-medium border border-pulse-200/50 dark:border-purple-500/30"
+                        className="px-3 py-1 bg-gradient-to-r from-pulse-50 to-pulse-100 dark:from-purple-900/30 dark:to-pulse-900/30 text-pulse-600 dark:text-purple-300 rounded-full text-sm font-medium border border-pulse-200/50 dark:border-purple-500/30"
                       >
                         {tech}
                       </span>
@@ -210,7 +210,7 @@ const AarambhProject = () => {
                   ))}
                 </div>
 
-                <div className="mt-8 p-6 bg-gradient-to-r from-pulse-50 to-orange-50 dark:from-purple-900/20 dark:to-orange-900/20 rounded-2xl border border-pulse-200/30 dark:border-purple-500/20">
+                <div className="mt-8 p-6 bg-gradient-to-r from-pulse-50 to-pulse-100 dark:from-purple-900/20 dark:to-pulse-900/20 rounded-2xl border border-pulse-200/30 dark:border-purple-500/20">
                   <div className="flex items-center gap-3 mb-3">
                     <Award className="w-6 h-6 text-pulse-500 dark:text-purple-400" />
                     <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Enterprise Ready</h4>
@@ -279,7 +279,7 @@ const AarambhProject = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-br from-pulse-50 to-orange-50 dark:from-gray-800 dark:to-gray-900">
+        <section className="py-16 bg-gradient-to-br from-pulse-50 to-pulse-100 dark:from-gray-800 dark:to-gray-900">
           <div className="section-container text-center">
             <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Experience the Platform</h2>
             <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">

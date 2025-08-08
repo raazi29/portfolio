@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 24 95% 53%; /*hsl(24, 95%, 53%) this is orange-500/pulse-500 */
+    --primary: 215 25% 27%; /*hsl(215, 25%, 27%) this is slate-500/pulse-500 */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -32,7 +32,7 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 24 95% 53%;
+    --ring: 215 25% 27%;
 
     --radius: 0.5rem;
 
@@ -56,7 +56,7 @@
     --popover: 0 0% 2%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 24 95% 53%;
+    --primary: 215 25% 27%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 3%; /* Very dark gray */
@@ -73,16 +73,16 @@
 
     --border: 0 0% 8%; /* Dark borders */
     --input: 0 0% 3%; /* Dark inputs */
-    --ring: 24 95% 53%;
+    --ring: 215 25% 27%;
     
     --sidebar-background: 0 0% 1%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 24 95% 53%;
+    --sidebar-primary: 215 25% 27%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 3%;
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 0 0% 6%;
-    --sidebar-ring: 24 95% 53%;
+    --sidebar-ring: 215 25% 27%;
   }
 }
 
@@ -384,28 +384,28 @@
   /* Apple Liquid UI Buttons - Dark mode adjustments */
   .liquid-button-primary {
     @apply relative w-full sm:w-auto px-8 py-4 rounded-2xl text-white font-medium transition-all duration-500 ease-out overflow-hidden cursor-pointer;
-    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3), 
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+    box-shadow: 0 4px 20px rgba(100, 116, 139, 0.3), 
                 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .dark .liquid-button-primary {
-    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.5), 
+    box-shadow: 0 4px 20px rgba(100, 116, 139, 0.5), 
                 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
   }
 
   .liquid-button-primary:hover {
     transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 30px rgba(249, 115, 22, 0.4), 
+    box-shadow: 0 8px 30px rgba(100, 116, 139, 0.4), 
                 0 0 0 1px rgba(255, 255, 255, 0.2) inset,
-                0 0 20px rgba(249, 115, 22, 0.2);
+                0 0 20px rgba(100, 116, 139, 0.2);
   }
 
   .dark .liquid-button-primary:hover {
-    box-shadow: 0 8px 30px rgba(249, 115, 22, 0.6), 
+    box-shadow: 0 8px 30px rgba(100, 116, 139, 0.6), 
                 0 0 0 1px rgba(255, 255, 255, 0.3) inset,
-                0 0 20px rgba(249, 115, 22, 0.4);
+                0 0 20px rgba(100, 116, 139, 0.4);
   }
 
   .liquid-button-primary:active {
@@ -435,28 +435,28 @@
   .liquid-button-social {
     @apply w-10 h-10 rounded-xl flex items-center justify-center relative overflow-hidden cursor-pointer transition-all duration-300 ease-out;
     background: linear-gradient(135deg, 
-      rgba(249, 115, 22, 0.1) 0%, 
-      rgba(249, 115, 22, 0.05) 100%);
-    border: 1px solid rgba(249, 115, 22, 0.2);
-    color: #f97316;
+      rgba(100, 116, 139, 0.1) 0%, 
+      rgba(100, 116, 139, 0.05) 100%);
+    border: 1px solid rgba(100, 116, 139, 0.2);
+    color: #64748b;
   }
 
   .dark .liquid-button-social {
     background: linear-gradient(135deg, 
-      rgba(249, 115, 22, 0.2) 0%, 
-      rgba(249, 115, 22, 0.1) 100%);
-    border: 1px solid rgba(249, 115, 22, 0.3);
+      rgba(100, 116, 139, 0.2) 0%, 
+      rgba(100, 116, 139, 0.1) 100%);
+    border: 1px solid rgba(100, 116, 139, 0.3);
   }
 
   .liquid-button-social:hover {
     transform: translateY(-2px) scale(1.05);
-    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
     color: white;
-    box-shadow: 0 8px 25px rgba(249, 115, 22, 0.3);
+    box-shadow: 0 8px 25px rgba(100, 116, 139, 0.3);
   }
 
   .dark .liquid-button-social:hover {
-    box-shadow: 0 8px 25px rgba(249, 115, 22, 0.5);
+    box-shadow: 0 8px 25px rgba(100, 116, 139, 0.5);
   }
 
   .liquid-button-bg {
@@ -660,8 +660,8 @@
     border-radius: 15px;
     background: linear-gradient(
       45deg, 
-      #ff0080, #ff6b00, #00d4ff, #8a2be2, #ff1493, #00ced1,
-      #ff0080, #ff6b00, #00d4ff, #8a2be2, #ff1493, #00ced1
+      #64748b, #475569, #334155, #1e293b, #0f172a, #020617,
+      #64748b, #475569, #334155, #1e293b, #0f172a, #020617
     );
     background-size: 400% 400%;
     width: calc(100% + 6px);
@@ -679,8 +679,8 @@
     border-radius: 20px;
     background: linear-gradient(
       45deg, 
-      #ff0080, #ff6b00, #00d4ff, #8a2be2, #ff1493, #00ced1,
-      #ff0080, #ff6b00, #00d4ff, #8a2be2, #ff1493, #00ced1
+      #64748b, #475569, #334155, #1e293b, #0f172a, #020617,
+      #64748b, #475569, #334155, #1e293b, #0f172a, #020617
     );
     background-size: 400% 400%;
     width: calc(100% + 16px);
@@ -746,8 +746,8 @@
     opacity: 1;
     background: linear-gradient(
       45deg, 
-      #ff0080, #ff4500, #00bfff, #9932cc, #ff1493, #20b2aa,
-      #ff0080, #ff4500, #00bfff, #9932cc, #ff1493, #20b2aa
+      #64748b, #475569, #334155, #1e293b, #0f172a, #020617,
+      #64748b, #475569, #334155, #1e293b, #0f172a, #020617
     );
   }
 

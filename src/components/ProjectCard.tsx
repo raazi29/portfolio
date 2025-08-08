@@ -75,7 +75,7 @@ const ProjectCard = ({
       style={{ animationDelay: `${0.15 * index}s` }}
     >
       {featured && (
-        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 bg-gradient-to-r from-pulse-500 to-orange-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs font-bold flex items-center gap-1 sm:gap-2 shadow-lg">
+        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 bg-gradient-to-r from-pulse-500 to-pulse-600 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs font-bold flex items-center gap-1 sm:gap-2 shadow-lg">
           <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
           <span className="hidden sm:inline">Featured</span>
           <span className="sm:hidden">★</span>

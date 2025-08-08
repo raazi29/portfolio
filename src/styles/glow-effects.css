@@ -21,11 +21,11 @@
   .bg-gradient-conic {
     background: conic-gradient(
       from 0deg,
-      #10b981,
-      #3b82f6,
-      #8b5cf6,
-      #ec4899,
-      #10b981
+      #64748b,
+      #475569,
+      #334155,
+      #1e293b,
+      #64748b
     );
   }
   
@@ -46,11 +46,11 @@
     padding: 2px;
     background: conic-gradient(
       from 0deg,
-      #10b981 0deg,
-      #3b82f6 90deg,
-      #8b5cf6 180deg,
-      #ec4899 270deg,
-      #10b981 360deg
+      #64748b 0deg,
+      #475569 90deg,
+      #334155 180deg,
+      #1e293b 270deg,
+      #64748b 360deg
     );
     border-radius: inherit;
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
