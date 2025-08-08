@@ -238,6 +238,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
           <button
             onClick={onClose}
             className="p-1 rounded-lg hover:bg-white/10 dark:hover:bg-white/5 transition-colors"
+            aria-label="Close settings panel"
           >
             <X className="w-4 h-4 text-gray-600 dark:text-gray-400" />
           </button>
@@ -288,6 +289,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
                 "text-gray-700 dark:text-gray-300",
                 "focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               )}
+              aria-label="Select blade style"
             >
               <option value="stable">Stable</option>
               <option value="unstable">Unstable (Kylo Ren)</option>
@@ -309,6 +311,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
                 value={settings.color}
                 onChange={(e) => onSettingsChange({ ...settings, color: e.target.value })}
                 className="w-full h-8 rounded-lg border border-white/20 dark:border-white/10 bg-transparent"
+                aria-label="Select blade color"
               />
             </div>
             <div>
@@ -320,6 +323,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
                 value={settings.hiltColor}
                 onChange={(e) => onSettingsChange({ ...settings, hiltColor: e.target.value })}
                 className="w-full h-8 rounded-lg border border-white/20 dark:border-white/10 bg-transparent"
+                aria-label="Select hilt color"
               />
             </div>
           </div>
@@ -338,6 +342,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
               value={settings.intensity}
               onChange={(e) => onSettingsChange({ ...settings, intensity: parseFloat(e.target.value) })}
               className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              aria-label="Adjust blade intensity"
             />
           </div>
 
@@ -354,6 +359,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
               value={settings.flickerSpeed}
               onChange={(e) => onSettingsChange({ ...settings, flickerSpeed: parseFloat(e.target.value) })}
               className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              aria-label="Adjust flicker speed"
             />
           </div>
 
@@ -371,6 +377,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
               value={settings.bladeLength}
               onChange={(e) => onSettingsChange({ ...settings, bladeLength: parseFloat(e.target.value) })}
               className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              aria-label="Adjust blade length"
             />
           </div>
 
@@ -387,6 +394,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
               value={settings.glowSize}
               onChange={(e) => onSettingsChange({ ...settings, glowSize: parseFloat(e.target.value) })}
               className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              aria-label="Adjust glow size"
             />
           </div>
 
@@ -403,6 +411,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
               value={settings.bladeThickness}
               onChange={(e) => onSettingsChange({ ...settings, bladeThickness: parseFloat(e.target.value) })}
               className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              aria-label="Adjust blade thickness"
             />
           </div>
 
@@ -420,6 +429,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
               value={settings.sparkCount}
               onChange={(e) => onSettingsChange({ ...settings, sparkCount: parseInt(e.target.value) })}
               className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              aria-label="Adjust spark count"
             />
           </div>
 
@@ -436,6 +446,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
               value={settings.slashTrailLength}
               onChange={(e) => onSettingsChange({ ...settings, slashTrailLength: parseFloat(e.target.value) })}
               className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              aria-label="Adjust slash trail length"
             />
           </div>
 
@@ -452,6 +463,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
               value={settings.slashDuration}
               onChange={(e) => onSettingsChange({ ...settings, slashDuration: parseFloat(e.target.value) })}
               className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              aria-label="Adjust slash duration"
             />
           </div>
 
@@ -468,6 +480,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
               value={settings.tiltSensitivity}
               onChange={(e) => onSettingsChange({ ...settings, tiltSensitivity: parseFloat(e.target.value) })}
               className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              aria-label="Adjust tilt sensitivity"
             />
           </div>
 
@@ -485,6 +498,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
               value={settings.corePulseSpeed}
               onChange={(e) => onSettingsChange({ ...settings, corePulseSpeed: parseFloat(e.target.value) })}
               className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              aria-label="Adjust core pulse speed"
             />
           </div>
 
@@ -506,6 +520,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
                 "text-gray-700 dark:text-gray-300",
                 "focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               )}
+              aria-label="Select tip shape"
             >
               <option value="rounded">Rounded</option>
               <option value="pointed">Pointed</option>
@@ -554,6 +569,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
                 "text-gray-700 dark:text-gray-300",
                 "focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               )}
+              aria-label="Select hilt style"
             >
               <option value="standard">Standard</option>
               <option value="graflex">Graflex (Luke Skywalker)</option>
@@ -578,6 +594,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
               value={settings.hiltWeathering}
               onChange={(e) => onSettingsChange({ ...settings, hiltWeathering: parseFloat(e.target.value) })}
               className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              aria-label="Adjust hilt weathering"
             />
           </div>
 
@@ -698,6 +715,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
                 "text-gray-700 dark:text-gray-300",
                 "focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               )}
+              aria-label="Select blade pattern"
             >
               <option value="solid">Solid</option>
               <option value="striped">Striped</option>
@@ -725,6 +743,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
                 "text-gray-700 dark:text-gray-300",
                 "focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               )}
+              aria-label="Select hilt material"
             >
               <option value="standard">Standard</option>
               <option value="chrome">Chrome</option>
@@ -758,6 +777,7 @@ const LightsaberSettingsPanel: React.FC<LightsaberSettingsPanelProps> = ({
                   "text-gray-700 dark:text-gray-300",
                   "focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                 )}
+                aria-label="Select sound font"
               >
                 <option value="standard">Standard</option>
                 <option value="vader">Darth Vader</option>
