@@ -97,7 +97,7 @@ const Hero = () => {
       className="overflow-hidden relative bg-cover" 
       id="hero" 
       style={{
-        backgroundImage: 'url("https://i.ibb.co/v61y9R4z/IMG-20250808-163542.png")',
+        backgroundImage: 'url("/img/image.png")',
         backgroundPosition: 'center 30%', 
         padding: isMobile ? '100px 12px 40px' : '120px 20px 60px'
       }}
@@ -108,40 +108,40 @@ const Hero = () => {
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-center">
           <div className="w-full lg:w-1/2">
             <div 
-              className="pulse-chip mb-4 sm:mb-8 opacity-0 animate-fade-in" 
+              className="pulse-chip mb-3 sm:mb-6 opacity-0 animate-fade-in" 
               style={{ animationDelay: "0.1s" }}
             >
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-r from-pulse-500 to-purple-600 text-white mr-3 font-bold text-sm">01</span>
-              <span className="font-semibold tracking-wide">Data Analyst</span>
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-pulse-500 text-white mr-2">01</span>
+              <span>Data Analyst</span>
             </div>
             
             <h1 
-              className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight opacity-0 animate-fade-in" 
+              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-tight opacity-0 animate-fade-in font-orbitron" 
               style={{ animationDelay: "0.3s" }}
             >
-              <span className="gradient-text font-extrabold tracking-tight">Mohammed Raazi</span><br className="hidden sm:inline" />
-              <span className="text-pulse-600 dark:text-purple-400 font-bold">Data Analyst & AI Developer</span>
+              <span className="shimmer-text font-extrabold">Mohammed Raazi   </span><br className="hidden sm:inline" />
+              <span className="text-pulse-500 font-bold">Data Analyst & AI Developer</span>
             </h1>
             
             <p 
               style={{ animationDelay: "0.5s" }} 
-              className="font-body mt-6 sm:mt-8 mb-6 sm:mb-10 leading-relaxed opacity-0 animate-fade-in text-gray-700 dark:text-gray-200 font-medium text-lg sm:text-xl text-left drop-shadow-lg max-w-2xl"
+              className="section-subtitle mt-3 sm:mt-6 mb-4 sm:mb-8 leading-relaxed opacity-0 animate-fade-in text-white font-medium text-base sm:text-lg text-left drop-shadow-lg"
             >
               Aspiring Data Analyst with expertise in Python, SQL, Machine Learning, and AI-based applications. Passionate about creating data-driven insights and accessible technology solutions.
             </p>
             
             <div 
-              className="flex flex-wrap gap-6 justify-center sm:justify-start opacity-0 animate-fade-in" 
+              className="flex flex-wrap gap-4 justify-center sm:justify-start opacity-0 animate-fade-in" 
               style={{ animationDelay: "0.7s" }}
             >
-              <div onClick={handleViewProjectsClick} className="hover-lift-enhanced">
-                <KeycapButton href="#projects" className="lightsaber-interactive shadow-2xl">
-                  <span className="font-bold text-base">View My Projects</span>
+              <div onClick={handleViewProjectsClick}>
+                <KeycapButton href="#projects" className="lightsaber-interactive">
+                  View My Projects
                 </KeycapButton>
               </div>
-              <a href="#contact" className="lightsaber-interactive hover-lift-enhanced">
+              <a href="#contact" className="lightsaber-interactive">
                 <ShimmerButton className="shadow-2xl">
-                  <span className="whitespace-pre-wrap text-center text-base font-bold leading-none tracking-tight text-white">
+                  <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white lg:text-lg">
                     Contact Me
                   </span>
                 </ShimmerButton>
