@@ -4,6 +4,7 @@ import LottieAnimation from "./LottieAnimation";
 import KeycapButton from "./KeycapButton";
 import { playClickSound } from "@/utils/audioUtils";
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
+import GradientBlinds from "./GradientBlinds";
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -94,17 +95,27 @@ const Hero = () => {
   
   return (
     <section 
-      className="overflow-hidden relative bg-cover" 
+      className="overflow-hidden relative min-h-screen flex items-center" 
       id="hero" 
       style={{
-        backgroundImage: 'url("/img/bg.jpg")',
-        backgroundPosition: 'center 30%', 
-        padding: isMobile ? '100px 12px 40px' : '120px 20px 60px'
+        padding: isMobile ? '120px 12px 60px' : '140px 20px 80px'
       }}
     >
-      <div className="absolute -top-[10%] -right-[5%] w-1/2 h-[70%] bg-pulse-gradient opacity-20 blur-3xl rounded-full"></div>
+      {/* GradientBlinds Background */}
+      <div className="absolute inset-0 z-0">
+        <GradientBlinds 
+          gradientColors={['#1a1a2e', '#16213e', '#0f3460', '#533483']}
+          angle={45}
+          noise={0.1}
+          blindCount={20}
+          mouseDampening={0.2}
+          spotlightRadius={0.8}
+          spotlightOpacity={0.3}
+          mixBlendMode="normal"
+        />
+      </div>
       
-      <div className="container px-4 sm:px-6 lg:px-8" ref={containerRef}>
+      <div className="container px-4 sm:px-6 lg:px-8 relative z-10" ref={containerRef}>
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-center">
           <div className="w-full lg:w-1/2">
             <div 
@@ -150,7 +161,7 @@ const Hero = () => {
           </div>
           
           <div className="w-full lg:w-1/2 relative mt-6 lg:mt-0">
-            {lottieData ? (
+            {lottieData && (
               <div className="relative z-10 animate-fade-in" style={{ animationDelay: "0.9s" }}>
                 <LottieAnimation 
                   animationPath={lottieData} 
@@ -159,20 +170,6 @@ const Hero = () => {
                   autoplay={true}
                 />
               </div>
-            ) : (
-              <>
-              <div className="absolute inset-0 bg-dark-900 rounded-2xl sm:rounded-3xl -z-10 shadow-xl"></div>
-              <div className="relative transition-all duration-500 ease-out overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl">
-                <img 
-                  ref={imageRef} 
-                  src="/img/robo.png" 
-                  alt="Mohammed Raazi Profile" 
-                  className="w-full h-auto object-cover transition-transform duration-500 ease-out" 
-                  style={{ transformStyle: 'preserve-3d' }} 
-                />
-                <div className="absolute inset-0" style={{ backgroundImage: 'url("/hero-image.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', mixBlendMode: 'overlay', opacity: 0.5 }}></div>
-              </div>
-              </>
             )}
           </div>
         </div>

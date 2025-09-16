@@ -24,6 +24,7 @@
 - **Dark/Light Theme** - Toggle between themes
 - **Smooth Animations** - Framer Motion powered
 - **Interactive Elements** - Engaging user experience
+- **AI Chat Interface** - Interactive AI assistant with multiple models
 
 </td>
 <td width="50%">
@@ -47,8 +48,7 @@
 | ![React](https://img.shields.io/badge/-React-61DAFB?style=flat-square&logo=react&logoColor=white) | ![Tailwind](https://img.shields.io/badge/-Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white) | ![Vite](https://img.shields.io/badge/-Vite-646CFF?style=flat-square&logo=vite&logoColor=white) | ![Framer Motion](https://img.shields.io/badge/-Framer_Motion-0055FF?style=flat-square&logo=framer&logoColor=white) |
 | ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) | ![Radix UI](https://img.shields.io/badge/-Radix_UI-161618?style=flat-square&logo=radix-ui&logoColor=white) | ![ESLint](https://img.shields.io/badge/-ESLint-4B32C3?style=flat-square&logo=eslint&logoColor=white) | ![React Query](https://img.shields.io/badge/-React_Query-FF4154?style=flat-square&logo=react-query&logoColor=white) |
 
-</div>## 🚀 Qui
-ck Start
+</div>## 🚀 Quick Start
 
 ```bash
 # Clone the repository
@@ -83,7 +83,10 @@ portfolio/
 │   │   ├── 👤 About.tsx   # About section
 │   │   ├── 💼 Projects.tsx # Projects showcase
 │   │   └── 📞 Contact.tsx # Contact form
+│   │   ├── 🤖 AIChatbot.tsx # AI Chatbot button component
 │   ├── 📁 pages/          # Route components
+│   │   ├── 🤖 AIChat.tsx  # AI Chat page component
+│   │   └── 📞 Contact.tsx # Contact form
 │   ├── 📁 contexts/       # React contexts
 │   ├── 📁 lib/           # Utility functions
 │   └── 📄 App.tsx        # Main app component
@@ -130,6 +133,22 @@ portfolio/
 - EmailJS integration
 - Social media links
 - Interactive animations
+
+</details>
+
+<details>
+<summary><b>🤖 AI Chat Interface</b></summary>
+
+- **Multi-Model Support** - Choose from 40+ AI models including vision models
+- **Image Analysis** - Analyze uploaded images with vision-enabled models
+- **Code Highlighting** - Automatic syntax highlighting for code blocks
+- **Streaming Responses** - Real-time response generation with typing indicators
+- **Conversation History** - Save and revisit previous conversations
+- **Model Switching** - Easily switch between different AI models
+- **File Attachments** - Upload images, PDFs, and text files for analysis
+- **Session Management** - Create and manage multiple chat sessions
+- **Advanced Modes** - Deep thinking, web search, and creative modes
+- **Responsive Design** - Works seamlessly on all device sizes
 
 </details>##
  🎨 Customization
@@ -198,6 +217,9 @@ Optimized for speed with lazy loading and code splitting
 
 ### 📱 **Mobile First**
 Responsive design that works on all devices
+
+### 🤖 **AI Chat Interface**
+Interactive AI assistant with multi-model support and advanced features
 
 </div>## 🤝
  Contributing

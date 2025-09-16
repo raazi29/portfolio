@@ -18,17 +18,20 @@ interface LightsaberSettings {
   slashTrailLength: number;
   slashDuration: number;
   tiltSensitivity: number;
-  bladeStyle: 'stable' | 'unstable' | 'fiery';
+  bladeStyle: 'stable' | 'unstable' | 'fiery' | 'cracked' | 'darksaber';
   corePulseSpeed: number;
   tipShape: 'rounded' | 'pointed' | 'flat';
   hasCrossguard: boolean;
-  hiltStyle: 'standard' | 'graflex' | 'vader' | 'curved';
+  hiltStyle: 'standard' | 'graflex' | 'vader' | 'curved' | 'obiwan' | 'luke' | 'windu';
   hiltWeathering: number;
   isDoubleBladed: boolean;
   isLightwhip: boolean;
   isShoto: boolean;
   hasBladeGradient: boolean;
   bladePattern: 'solid' | 'striped' | 'spiral' | 'energy' | 'crystal';
+  hiltMaterial: 'standard' | 'chrome' | 'matte' | 'gold';
+  soundFont: 'standard' | 'vader' | 'luke' | 'obiwan' | 'kylo';
+  playAmbientSounds: boolean;
 }
 
 const Navbar = () => {
@@ -60,7 +63,10 @@ const Navbar = () => {
     isLightwhip: false,
     isShoto: false,
     hasBladeGradient: false,
-    bladePattern: 'solid'
+    bladePattern: 'solid',
+    hiltMaterial: 'standard',
+    soundFont: 'standard',
+    playAmbientSounds: false
   });
 
   useEffect(() => {
@@ -196,14 +202,14 @@ const Navbar = () => {
         "bg-transparent",
         "backdrop-blur-sm backdrop-saturate-[1.2]",
         "apple-glass-effect",
-        "before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/5 before:via-white/2 before:to-white/5 before:opacity-30 dark:before:from-white/3 dark:before:via-white/1 dark:before:to-white/3 dark:before:opacity-20",
+        "before:absolute before:inset-0 before:bg-gradient-to-r before:from-black/5 before:via-black/2 before:to-black/5 before:opacity-30 dark:before:from-white/3 dark:before:via-white/1 dark:before:to-white/3 dark:before:opacity-20",
         "shadow-sm shadow-black/5 dark:shadow-black/10"
       )}>
         {/* Fish-eye refraction corner elements */}
-        <div className="absolute top-0 left-0 w-8 h-8 rounded-br-[24px] bg-gradient-radial from-white/10 via-white/5 to-transparent opacity-40 dark:from-white/8 dark:via-white/4 dark:to-transparent blur-[1px] pointer-events-none"></div>
-        <div className="absolute top-0 right-0 w-8 h-8 rounded-bl-[24px] bg-gradient-radial from-white/10 via-white/5 to-transparent opacity-40 dark:from-white/8 dark:via-white/4 dark:to-transparent blur-[1px] pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-8 h-8 rounded-tr-[24px] bg-gradient-radial from-white/10 via-white/5 to-transparent opacity-40 dark:from-white/8 dark:via-white/4 dark:to-transparent blur-[1px] pointer-events-none"></div>
-        <div className="absolute bottom-0 right-0 w-8 h-8 rounded-tl-[24px] bg-gradient-radial from-white/10 via-white/5 to-transparent opacity-40 dark:from-white/8 dark:via-white/4 dark:to-transparent blur-[1px] pointer-events-none"></div>
+        <div className="absolute top-0 left-0 w-8 h-8 rounded-br-[24px] bg-gradient-radial from-black/10 via-black/5 to-transparent opacity-40 dark:from-white/8 dark:via-white/4 dark:to-transparent dark:opacity-40 blur-[1px] pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-8 h-8 rounded-bl-[24px] bg-gradient-radial from-black/10 via-black/5 to-transparent opacity-40 dark:from-white/8 dark:via-white/4 dark:to-transparent dark:opacity-40 blur-[1px] pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-8 h-8 rounded-tr-[24px] bg-gradient-radial from-black/10 via-black/5 to-transparent opacity-40 dark:from-white/8 dark:via-white/4 dark:to-transparent dark:opacity-40 blur-[1px] pointer-events-none"></div>
+        <div className="absolute bottom-0 right-0 w-8 h-8 rounded-tl-[24px] bg-gradient-radial from-black/10 via-black/5 to-transparent opacity-40 dark:from-white/8 dark:via-white/4 dark:to-transparent dark:opacity-40 blur-[1px] pointer-events-none"></div>
         
         <div className="relative flex items-center justify-between">
           {/* Logo with R */}
@@ -221,7 +227,7 @@ const Navbar = () => {
               "group-hover:bg-white/20 dark:group-hover:bg-white/10",
               "backdrop-blur-sm"
             )}>
-              <span className="text-sm font-bold text-gray-800 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+              <span className="text-sm font-bold text-gray-900 dark:text-gray-200 group-hover:text-black dark:group-hover:text-white transition-colors">
                 R
               </span>
             </div>
@@ -239,8 +245,8 @@ const Navbar = () => {
                   "hover:backdrop-blur-sm hover:scale-105",
                   "hover:shadow-sm hover:shadow-white/10 dark:hover:shadow-white/5",
                   activeSection === item.id 
-                    ? "text-gray-900 dark:text-white bg-white/15 dark:bg-white/10 shadow-sm shadow-white/20 dark:shadow-white/5" 
-                    : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                    ? "text-black dark:text-white bg-white/15 dark:bg-white/10 shadow-sm shadow-white/20 dark:shadow-white/5" 
+                    : "text-gray-900 dark:text-gray-300 hover:text-black dark:hover:text-white"
                 )}
               >
                 <span className="relative z-10">{item.label}</span>
@@ -257,7 +263,7 @@ const Navbar = () => {
               onClick={handleResumeDownload}
               className={cn(
                 "relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300",
-                "bg-white/10 dark:bg-white/5 text-gray-800 dark:text-gray-200",
+                "bg-white/10 dark:bg-white/5 text-black dark:text-gray-200",
                 "border border-pulse-500/30 dark:border-pulse-400/30",
                 "hover:bg-pulse-500/10 dark:hover:bg-pulse-400/10",
                 "hover:border-pulse-500/50 dark:hover:border-pulse-400/50",
@@ -289,7 +295,7 @@ const Navbar = () => {
                 "hover:shadow-sm hover:shadow-white/10 dark:hover:shadow-white/15",
                 isLightsaberEnabled 
                   ? "text-green-500 dark:text-green-400 bg-green-500/10 dark:bg-green-400/10" 
-                  : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                  : "text-gray-900 dark:text-gray-300 hover:text-black dark:hover:text-white"
               )}
               aria-label={isLightsaberEnabled ? "Disable lightsaber cursor" : "Enable lightsaber cursor"}
             >
@@ -306,9 +312,9 @@ const Navbar = () => {
                 onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                 className={cn(
                   "relative p-1.5 rounded-xl transition-all duration-300",
-                  "text-gray-700 dark:text-gray-300",
+                  "text-gray-900 dark:text-gray-300",
                   "hover:bg-white/10 dark:hover:bg-white/5",
-                  "hover:text-gray-900 dark:hover:text-white",
+                  "hover:text-black dark:hover:text-white",
                   "hover:scale-110 active:scale-95",
                   "focus:outline-none focus:ring-2 focus:ring-white/20 dark:focus:ring-white/10",
                   "backdrop-blur-sm"
@@ -335,11 +341,11 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={cn(
                 "relative ml-0.5 p-1.5 rounded-xl transition-all duration-300",
-                "text-gray-700 dark:text-gray-300",
+                "text-gray-900 dark:text-gray-300",
                 "bg-white/10 dark:bg-white/5",
                 "border border-white/10 dark:border-white/5",
                 "hover:bg-white/15 dark:hover:bg-white/10",
-                "hover:text-gray-900 dark:hover:text-white",
+                "hover:text-black dark:hover:text-white",
                 "hover:scale-105 active:scale-95",
                 "focus:outline-none focus:ring-2 focus:ring-white/20 dark:focus:ring-white/10",
                 "backdrop-blur-sm"

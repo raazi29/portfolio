@@ -28,7 +28,7 @@ interface LightsaberSettings {
 
   tiltSensitivity: number;
 
-  bladeStyle: 'stable' | 'unstable' | 'fiery';
+  bladeStyle: 'stable' | 'unstable' | 'fiery' | 'cracked' | 'darksaber';
 
   corePulseSpeed: number;
 
@@ -36,7 +36,7 @@ interface LightsaberSettings {
 
   hasCrossguard: boolean;
 
-  hiltStyle: 'standard' | 'graflex' | 'vader' | 'curved';
+  hiltStyle: 'standard' | 'graflex' | 'vader' | 'curved' | 'obiwan' | 'luke' | 'windu';
 
   hiltWeathering: number;
 
@@ -886,6 +886,59 @@ function LightsaberCursor({
 
 
 
+  // Hilt Components for new styles
+  const ObiWanHilt = () => (
+    <div
+      className="w-1 h-4 rounded-sm shadow-lg relative"
+      style={getWeatheringStyle(`linear-gradient(to bottom, #c0c0c0dd, #a0a0a0aa, #80808077)`)}
+    >
+      {/* Top emitter */}
+      <div className="w-full h-0.5 bg-gray-300 rounded-t-sm"></div>
+      {/* Main body with distinctive ring */}
+      <div className="w-full h-2 mt-0.5 bg-gray-400 relative">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0.5 h-1 bg-gray-600 rounded-sm"></div>
+      </div>
+      {/* Bottom grip */}
+      <div className="w-full h-0.5 mt-0.5 bg-gray-600"></div>
+      {/* Activation button */}
+      <div className="absolute right-0 top-2 w-0.5 h-0.5 bg-red-500 rounded-full shadow-sm shadow-red-500"></div>
+    </div>
+  );
+
+  const LukeHilt = () => (
+    <div
+      className="w-1 h-4 rounded-sm shadow-lg relative"
+      style={getWeatheringStyle(`linear-gradient(to bottom, #d4af37dd, #b8941faa, #8b691477)`)}
+    >
+      {/* Top emitter */}
+      <div className="w-full h-0.5 bg-yellow-30 rounded-t-sm"></div>
+      {/* Main body */}
+      <div className="w-full h-2 mt-0.5 bg-yellow-400"></div>
+      {/* Bottom grip */}
+      <div className="w-full h-0.5 mt-0.5 bg-yellow-300"></div>
+      {/* Activation button */}
+      <div className="absolute right-0 top-2 w-0.5 h-0.5 bg-red-500 rounded-full shadow-sm shadow-red-500"></div>
+    </div>
+  );
+
+  const WinduHilt = () => (
+    <div
+      className="w-1 h-5 rounded-sm shadow-lg relative"
+      style={getWeatheringStyle(`linear-gradient(to bottom, #8b00ffdd, #6a00ccaa, #4b008277)`)}
+    >
+      {/* Top emitter */}
+      <div className="w-full h-0.5 bg-purple-300 rounded-t-sm"></div>
+      {/* Main body */}
+      <div className="w-full h-3 mt-0.5 bg-purple-500"></div>
+      {/* Bottom grip */}
+      <div className="w-full h-0.5 mt-0.5 bg-purple-300"></div>
+      {/* Activation button */}
+      <div className="absolute right-0 top-2.5 w-0.5 h-0.5 bg-red-500 rounded-full shadow-sm shadow-red-500"></div>
+      {/* Side details */}
+      <div className="absolute left-0 top-2 w-0.5 h-1 bg-purple-600 rounded-sm"></div>
+      <div className="absolute right-0 top-2 w-0.5 h-1 bg-purple-600 rounded-sm"></div>
+    </div>
+  );
   // Function to render the appropriate hilt
 
   const renderHilt = () => {
@@ -903,6 +956,12 @@ function LightsaberCursor({
       case 'curved':
 
         return <CurvedHilt />;
+      case 'obiwan':
+        return <ObiWanHilt />;
+      case 'luke':
+        return <LukeHilt />;
+      case 'windu':
+        return <WinduHilt />;
 
       case 'standard':
 
