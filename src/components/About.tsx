@@ -53,9 +53,9 @@ const About = () => {
           <motion.div variants={itemVariants} className="space-y-6">
             <p className="text-lg md:text-xl leading-relaxed text-gray-700 dark:text-gray-300">
               Hello, I'm Mohammed Raazi, a passionate Data Analyst based in Bangalore, India. I began studying 
-              data science and AI development in 2022. After working on various projects and building my expertise, 
+              data science and AI in 2022. After working on various projects and building my expertise, 
               I'm now focused on creating data-driven solutions that make a real impact. I specialize in machine learning 
-              implementations, data visualization, and AI-powered applications.
+              implementations, data visualization, and AI-powered applications Mobile apps & Webapps.
             </p>
             <p className="text-lg md:text-xl leading-relaxed text-gray-700 dark:text-gray-300">
               I focus on transforming complex data into actionable insights and building intelligent systems that 
@@ -110,11 +110,29 @@ const About = () => {
           <motion.div variants={itemVariants} className="text-center pt-8">
             <motion.a
               href="#projects"
-              className="inline-flex items-center px-8 py-4 bg-pulse-500 hover:bg-pulse-600 text-white font-semibold rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
+              className="group relative inline-flex items-center px-8 py-4 font-semibold rounded-2xl transition-all duration-300 overflow-hidden backdrop-blur-sm bg-transparent border border-gray-300/30 dark:border-white/20 hover:border-pulse-500/50 dark:hover:border-pulse-400/50 shadow-lg hover:shadow-xl hover:shadow-pulse-500/20 dark:hover:shadow-pulse-400/20"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              View My Projects
+              {/* Glass background effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/5 to-white/10 dark:from-white/5 dark:via-white/2 dark:to-white/5 opacity-50 group-hover:opacity-80 transition-opacity duration-300"></div>
+              
+              {/* Shimmer effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 dark:via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
+              
+              {/* Corner highlights */}
+              <div className="absolute top-0 left-0 w-4 h-4 rounded-br-2xl bg-gradient-radial from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute top-0 right-0 w-4 h-4 rounded-bl-2xl bg-gradient-radial from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute bottom-0 left-0 w-4 h-4 rounded-tr-2xl bg-gradient-radial from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute bottom-0 right-0 w-4 h-4 rounded-tl-2xl bg-gradient-radial from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              {/* Button text */}
+              <span className="relative z-10 text-gray-900 dark:text-white group-hover:text-pulse-600 dark:group-hover:text-pulse-400 transition-colors duration-300">
+                View My Projects
+              </span>
+              
+              {/* Glow effect on hover */}
+              <div className="absolute inset-0 rounded-2xl bg-pulse-500/10 dark:bg-pulse-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </motion.a>
           </motion.div>
         </motion.div>

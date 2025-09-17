@@ -166,8 +166,8 @@ const Navbar = () => {
     try {
       // Create a dummy resume download - replace with your actual resume file
       const link = document.createElement('a');
-      link.href = '/public/resume/Resume.pdf'; // Replace with your actual resume file path
-      link.download = 'Mohammed_Raazi_Resume.pdf';
+      link.href = '/resume/Resume.pdf'; // Replace with your actual resume file path
+      link.download = 'Resume.pdf';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

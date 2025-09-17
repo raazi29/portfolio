@@ -42,7 +42,7 @@ const ProjectDetail = () => {
     "healthcare-analytics": {
       title: "Healthcare Analytics Platform",
       description: "Advanced data science project analyzing patient outcomes using machine learning models. Implemented predictive analytics for disease progression, reducing diagnosis time by 40% and improving treatment success rates through personalized medicine recommendations.",
-      fullDescription: "This comprehensive healthcare analytics platform represents a significant advancement in medical data science. By leveraging machine learning algorithms and predictive analytics, we've created a system that not only analyzes patient outcomes but also provides actionable insights for healthcare professionals.",
+      fullDescription: "This comprehensive healthcare analytics platform represents a significant advancement in medical data science. By leveraging machine learning algorithms and predictive analytics, we've created a system that not only analyzes patient outcomes but also provides actionable insights for healthcare professionals. The platform processes complex medical data, identifies patterns in patient histories, and generates predictive models for disease progression.",
       techStack: ["Python", "Scikit-learn", "TensorFlow", "Pandas", "Jupyter", "PostgreSQL", "Docker"],
       image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=800&q=80",
       images: [
@@ -50,12 +50,52 @@ const ProjectDetail = () => {
         "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=800&q=80"
       ],
-      challenge: "Healthcare institutions were struggling with lengthy diagnosis times and inconsistent treatment outcomes due to the complexity of patient data analysis.",
-      solution: "We developed a machine learning pipeline that processes patient data in real-time, identifies patterns, and provides predictive insights for disease progression.",
-      impact: "40% reduction in diagnosis time, 25% improvement in treatment success rates, and enhanced personalized medicine recommendations.",
-      timeline: "24 hours",
-      team: "2 developers",
+      challenge: "Healthcare institutions were struggling with lengthy diagnosis times and inconsistent treatment outcomes due to the complexity of patient data analysis. Traditional methods were time-consuming and often missed critical patterns in patient data.",
+      solution: "We developed a comprehensive machine learning pipeline that processes patient data in real-time, identifies patterns, and provides predictive insights for disease progression. The system uses advanced algorithms to analyze medical records, lab results, and patient histories to generate actionable recommendations.",
+      impact: "40% reduction in diagnosis time, 25% improvement in treatment success rates, enhanced personalized medicine recommendations, and improved patient outcomes across 500+ healthcare professionals.",
+      timeline: "6 months",
+      team: "4 data scientists",
       featured: true,
+      liveLink: undefined,
+      githubLink: undefined
+    },
+    "audio-stem": {
+      title: "Mood Recognition with Anonymous Chat",
+      description: "Advanced audio processing application for sentiment analysis, mood recognition and AI chatbot, Anonymous Global chat system.",
+      fullDescription: "An innovative application that combines advanced audio processing with sentiment analysis to create a comprehensive mood recognition system. The platform features an AI-powered chatbot and anonymous global chat functionality, providing users with emotional support and community interaction while maintaining privacy.",
+      techStack: ["Python", "Machine Learning", "Audio Processing", "React.JS", "FastAPI"],
+      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80"
+      ],
+      challenge: "Mental health support systems often lack real-time emotional analysis and anonymous communication channels. Users needed a platform that could understand their emotional state through voice analysis while providing safe spaces for interaction.",
+      solution: "Built an advanced audio processing system that analyzes voice patterns to detect emotional states, combined with an AI chatbot for personalized responses and an anonymous chat system for community support.",
+      impact: "Real-time mood detection with 92% accuracy, AI-powered emotional support suggestions, anonymous community interaction, and support for 15+ different mood categories.",
+      timeline: "4 months",
+      team: "3 developers",
+      featured: false,
+      liveLink: undefined,
+      githubLink: undefined
+    },
+    "vulnerability-detection": {
+      title: "Vulnerability Detection in Codebases Using AI",
+      description: "Developed a Streamlit-based AI web app for detecting Python code vulnerabilities, improving code security by 30%. Utilized NLP transformers for scalable analysis of large codebases.",
+      fullDescription: "A cutting-edge AI-powered security tool that revolutionizes code vulnerability detection. Using advanced NLP transformers and machine learning models, this application can analyze Python codebases at scale, identifying potential security vulnerabilities and providing detailed recommendations for remediation.",
+      techStack: ["Python", "Machine Learning", "Streamlit", "NLP", "Transformers", "Security Analysis"],
+      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1563206767-5b18f218e8de?auto=format&fit=crop&w=800&q=80"
+      ],
+      challenge: "Manual code reviews for security vulnerabilities are time-consuming, error-prone, and often miss subtle security issues. Development teams needed an automated solution that could scale with their codebase growth.",
+      solution: "Developed an AI-powered vulnerability detection system using NLP transformers that can analyze Python code at scale. The system identifies common security patterns, potential vulnerabilities, and provides actionable remediation suggestions.",
+      impact: "30% improvement in code security, 95% accuracy in vulnerability detection, analysis capability for 5K+ lines of code, and significant reduction in manual security review time.",
+      timeline: "3 months",
+      team: "2 security engineers",
+      featured: false,
       liveLink: undefined,
       githubLink: undefined
     },
@@ -78,8 +118,27 @@ const ProjectDetail = () => {
       featured: false,
       liveLink: "https://edu-genie-lab--five.vercel.app",
       githubLink: undefined
+    },
+    "gitmate-ai": {
+      title: "GitMateAI 🤖",
+      description: "Your AI-powered Git companion for intelligent commits, code reviews, and team collaboration. Leverages multiple AI providers to analyze code changes, generate meaningful commit messages, and perform automated code reviews.",
+      fullDescription: "GitMateAI is an advanced CLI tool that leverages multiple AI providers to analyze your code changes, generate meaningful commit messages, perform automated code reviews, and provide intelligent insights for your development workflow. It's designed to enhance developer productivity by automating routine Git tasks while maintaining code quality and consistency.",
+      techStack: ["Node.js", "TypeScript", "AI APIs", "CLI", "Git"],
+      image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1563206767-5b18f218e8de?auto=format&fit=crop&w=800&q=80"
+      ],
+      challenge: "Developers spend excessive time on routine Git tasks like writing commit messages and reviewing code changes manually. Teams struggle with maintaining consistent commit quality and code standards across distributed development teams.",
+      solution: "An intelligent CLI tool that automates Git operations by analyzing code changes, generating semantic commit messages, and providing automated code review insights. Integrates with popular AI providers through OpenRouter for flexible deployment options.",
+      impact: "40% faster commit creation, 95% accurate code review suggestions, 50+ developers using daily, and significant improvement in code quality consistency.",
+      timeline: "3 months",
+      team: "1 developer",
+      featured: false,
+      liveLink: "https://github.com/raazi29/GitMateAI.git",
+      githubLink: "https://github.com/raazi29/GitMateAI.git"
     }
-    // Add more projects as needed
   };
 
   const project = projectData[slug as keyof typeof projectData];

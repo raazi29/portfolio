@@ -25,6 +25,7 @@
 - **Smooth Animations** - Framer Motion powered
 - **Interactive Elements** - Engaging user experience
 - **AI Chat Interface** - Interactive AI assistant with multiple models
+- **GitMateAI Project** - AI-powered Git companion for intelligent commits and code reviews
 
 </td>
 <td width="50%">
@@ -137,6 +138,16 @@ portfolio/
 </details>
 
 <details>
+<summary><b>🤖 GitMateAI Project</b></summary>
+
+- AI-powered Git companion for intelligent commits and code reviews
+- Supports multiple AI providers via OpenRouter
+- CLI tool for automated Git operations
+- Integrates with popular development workflows
+- GitHub repository with detailed documentation
+</details>
+
+<details>
 <summary><b>🤖 AI Chat Interface</b></summary>
 
 - **Multi-Model Support** - Choose from 40+ AI models including vision models
@@ -220,6 +231,9 @@ Responsive design that works on all devices
 
 ### 🤖 **AI Chat Interface**
 Interactive AI assistant with multi-model support and advanced features
+
+### 🐙 **GitMateAI Project**
+AI-powered Git companion for intelligent commits and code reviews with multi-provider support
 
 </div>## 🤝
  Contributing
