@@ -51,29 +51,37 @@ const About = () => {
 
           {/* Main Introduction */}
           <motion.div variants={itemVariants} className="space-y-6">
-            <p className="text-lg md:text-xl leading-relaxed text-gray-700 dark:text-gray-300">
-              Hello, I'm Mohammed Raazi, a passionate Data Analyst based in Bangalore, India. I began studying 
-              data science and AI in 2022. After working on various projects and building my expertise, 
-              I'm now focused on creating data-driven solutions that make a real impact. I specialize in machine learning 
-              implementations, data visualization, and AI-powered applications Mobile apps & Webapps.
-            </p>
-            <p className="text-lg md:text-xl leading-relaxed text-gray-700 dark:text-gray-300">
-              I focus on transforming complex data into actionable insights and building intelligent systems that 
-              solve real-world problems. My approach combines technical expertise with creative problem-solving 
-              to deliver solutions that are both effective and user-friendly.
-            </p>
-          </motion.div>
+  <p className="text-lg md:text-xl leading-relaxed text-gray-700 dark:text-gray-300">
+    Hi, I'm Mohammed Raazi — an AI Engineer and Data Analyst based in Bangalore, India. 
+    Since 2022, I’ve been passionate about turning data into intelligent, real-world solutions. 
+    With hands-on experience in machine learning, cloud systems, and LLM-powered applications, 
+    I specialize in building AI-driven tools across web and mobile platforms.
+  </p>
+  <p className="text-lg md:text-xl leading-relaxed text-gray-700 dark:text-gray-300">
+    My work spans from developing scalable infrastructure monitoring platforms 
+    to creating interactive data visualizations and autonomous AI agents. 
+    I focus on transforming complex problems into actionable insights and deploying 
+    production-ready systems that are reliable, secure, and user-friendly.
+  </p>
+  <p className="text-lg md:text-xl leading-relaxed text-gray-700 dark:text-gray-300">
+    Beyond technical expertise, I’m driven by the impact AI can make — 
+    whether it’s reducing downtime, enabling smarter decisions, or delivering 
+    innovative user experiences that scale to hundreds of active users.
+  </p>
+</motion.div>
+
 
           {/* What is Important Section */}
           <motion.div variants={itemVariants} className="space-y-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-              What is important
-            </h2>
-            <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-              Data integrity and ethical AI come first. High-quality insights depend on both technical precision 
-              and responsible data practices. I believe in transparent methodologies, collaborative problem-solving, 
-              and creating solutions that benefit users while respecting privacy and fairness.
-            </p>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+    Core Values
+  </h2>
+  <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+    I prioritize data integrity and ethical AI above everything else. 
+    Reliable insights come not only from technical precision but also from responsible data practices. 
+    In my work, I follow transparent processes, encourage collaboration, and design solutions 
+    that are fair, privacy-conscious, and genuinely valuable for users.
+  </p>
           </motion.div>
 
           {/* Scope of Work Section */}
