@@ -172,11 +172,11 @@ const Projects = () => {
     {
       title: "Mood Recognition with Anonymous Chat",
       description: "Advanced audio processing application for Sentiment analysis, mood recognition and AI chatbot ,Anonymous Global chat system .",
-      techStack: ["Python", "Machine Learning", "Audio Processing", "React.JS","FastAPI"],
+      techStack: ["Python", "React.JS","Machine Learning", "Audio Processing","FastAPI"],
       
       image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80",
       slug: "audio-stem",
-      githubLink: undefined,
+      githubLink: "https://github.com/raazi29/mindmate-emotions-flow.git",
       metrics: {
         quality: "AI suggestions based on mood and chat",
         processing: "Real-time processing",
